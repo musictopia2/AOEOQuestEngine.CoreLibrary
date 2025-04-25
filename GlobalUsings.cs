@@ -22,3 +22,4 @@ global using AOEOQuestEngine.CoreLibrary.Shared.Extensions;
 global using AOEOQuestEngine.CoreLibrary.ChampionMode.Extensions;
 global using AOEOQuestEngine.CoreLibrary.ChampionMode.Services;
 global using Microsoft.AspNetCore.Components;
+global using ll1 = CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.FileFunctions.FileLocator;

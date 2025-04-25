@@ -1,39 +1,19 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.ChampionMode.Extensions;
 public static class ServiceExtensions
 {
-    // Registers basic services for Champion Mode tests.
-    // The `additionalservices` action allows for further custom configurations.
-    public static IServiceCollection RegisterAOEOTestsChampionMode<L>(this IServiceCollection services,
-        Action<IServiceCollection> additionalservices
-        )
-        where L : class, IQuestLocatorService
-    {
-        services.RegisterBasicsForTesting(services =>
-        {
-            //if you need monitoring, you have to use windows stuff.
-            services.AddSingleton<IQuestLocatorService, L>()
-                .AddSingleton<IAddTechsToCharacterService, NoTechsCharacterService>()
-                .AddSingleton<IAddTechsToTechTreeService, ChampionCustomTechClass>();
-            services.RegisterCoreOfflineServices()
-            .RegisterStandardQuestServices()
-            .RegisterNoLaunchSpartanServices() //if they do this, no launcher for sparta.
-            ;
-            additionalservices.Invoke(services);
-        });
-        return services;
-    }
+    //for test services, make it clear should use the windows services for testing single quests.
+
+
     //the shared has to happen somewhere else.
-    public static IServiceCollection RegisterChampionModeProcessingServices<Q> (this IServiceCollection services, Action<IServiceCollection> additionalActions)
-        where Q : class, IProcessQuestService
+    public static IServiceCollection RegisterChampionModeProcessingServices (this IServiceCollection services, Action<IServiceCollection> additionalActions)
     {
-        services.AddSingleton<IProcessQuestService, Q>()
+        services.AddSingleton<IProcessQuestService, ChampionProcessQuestService>()
+            .AddSingleton<ChampionSharedQuestProcessor>()
             .RegisterCoreOfflineServices()
             .RegisterCoreQuestQuestProcessorServices()
-            .AddSingleton<IAddTechsToCharacterService, NoTechsCharacterService>()
-            .AddSingleton<IAddTechsToTechTreeService, ChampionCustomTechClass>();
-        services.RegisterCoreOfflineServices()
-         .RegisterStandardQuestServices()
-         .RegisterNoLaunchSpartanServices()
+            .AddSingleton<IAddTechsToTechTreeService, ChampionCustomTechClass>()
+            .RegisterStandardQuestServices()
+            .RegisterNoLaunchSpartanServices()
         ;
         additionalActions?.Invoke(services); //major but here.
         return services;

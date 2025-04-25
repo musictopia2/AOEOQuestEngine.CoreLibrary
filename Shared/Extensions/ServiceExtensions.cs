@@ -12,19 +12,22 @@ public static class ServiceExtensions
     public static IServiceCollection RegisterNoLaunchSpartanServices(this IServiceCollection services)
     {
         //this requires nothing else.
-        services.AddSingleton<ISpartanLaunchHandler, DoNothingSpartanLaunchHandler>();
+        services.AddSingleton<ISpartanLaunchHandler, DoNothingSpartanLaunchHandler>()
+            .AddSingleton<QuestMonitoringEndingContainer>(); //better to be safe than sorry
         return services;
     }
     public static IServiceCollection RegisterCoreOfflineServices(this IServiceCollection services)
     {
         //anything else that could be needed but are advanced services.
-        services.AddSingleton<ITechBusinessService, TechBusinessService>();
+        services.AddSingleton<ITechBusinessService, TechBusinessService>()
+            .AddSingleton<IAddTechsToCharacterService, NoTechsCharacterService>();
         services.AddSingleton<ITacticsBusinessService, BasicTacticsBusinessService>();
         services.AddSingleton<ITacticsAutomation, CustomTacticsClass>();
         services.AddSingleton<IUnitProcessor, StandardUnitProcessor>();
         return services;
     }
-    internal static IServiceCollection RegisterCoreQuestQuestProcessorServices(this IServiceCollection services)
+    //since a windows library has to use this as well.
+    public static IServiceCollection RegisterCoreQuestQuestProcessorServices(this IServiceCollection services)
     {
         services.RegisterBasicsForTesting(services =>
         {
