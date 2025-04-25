@@ -21,3 +21,4 @@ global using AOEOQuestEngine.CoreLibrary.Shared.Services;
 global using AOEOQuestEngine.CoreLibrary.Shared.Extensions;
 global using AOEOQuestEngine.CoreLibrary.ChampionMode.Extensions;
 global using AOEOQuestEngine.CoreLibrary.ChampionMode.Services;
+global using Microsoft.AspNetCore.Components;

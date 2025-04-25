@@ -1,5 +1,4 @@
-﻿
-namespace AOEOQuestEngine.CoreLibrary.ChampionMode.Extensions;
+﻿namespace AOEOQuestEngine.CoreLibrary.ChampionMode.Extensions;
 public static class ServiceExtensions
 {
     // Registers basic services for Champion Mode tests.
