@@ -23,3 +23,7 @@ global using AOEOQuestEngine.CoreLibrary.ChampionMode.Extensions;
 global using AOEOQuestEngine.CoreLibrary.ChampionMode.Services;
 global using Microsoft.AspNetCore.Components;
 global using ll1 = CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.FileFunctions.FileLocator;
+global using AOEOCivilizationLibrary.ViewModels;
+global using AOEOQuestEngine.CoreLibrary.Shared.Configurations;
+global using QuestTesterLibrary.ViewModels;
+global using AOEOQuestEngine.CoreLibrary.ChampionMode.ViewModels;

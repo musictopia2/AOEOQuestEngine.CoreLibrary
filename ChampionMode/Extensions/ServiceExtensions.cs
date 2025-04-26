@@ -1,11 +1,7 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.ChampionMode.Extensions;
 public static class ServiceExtensions
 {
-    //for test services, make it clear should use the windows services for testing single quests.
-
-
-    //the shared has to happen somewhere else.
-    public static IServiceCollection RegisterChampionModeProcessingServices (this IServiceCollection services, Action<IServiceCollection> additionalActions)
+    public static IServiceCollection RegisterChampionModeProcessingServices(this IServiceCollection services, Action<IServiceCollection> additionalActions)
     {
         services.AddSingleton<IProcessQuestService, ChampionProcessQuestService>()
             .AddSingleton<ChampionSharedQuestProcessor>()
@@ -13,9 +9,25 @@ public static class ServiceExtensions
             .RegisterCoreQuestQuestProcessorServices()
             .AddSingleton<IAddTechsToTechTreeService, ChampionCustomTechClass>()
             .RegisterStandardQuestServices()
-            .RegisterNoLaunchSpartanServices()
-        ;
-        additionalActions?.Invoke(services); //major but here.
+            .RegisterNoLaunchSpartanServices();
+        additionalActions.Invoke(services); //major but here.
+        return services;
+    }
+    public static IServiceCollection RegisterChampionModeTestServices<L>(this IServiceCollection services, Action<IServiceCollection> additionalActions)
+        where L : class, IQuestLocatorService
+    {
+        services.RegisterBasicsForTesting(services =>
+        {
+            services.AddSingleton<IQuestLocatorService, L>()
+                    .AddSingleton<ChampionSharedQuestProcessor>()
+                .AddSingleton<IAddTechsToCharacterService, NoTechsCharacterService>()
+                .AddSingleton<IAddTechsToTechTreeService, ChampionCustomTechClass>();
+            services.AddSingleton<IPlayQuestViewModel, ChampionTestSingleQuestViewModel>();
+            services.RegisterCoreOfflineServices()
+            .RegisterStandardQuestServices()
+            .RegisterNoLaunchSpartanServices(); //if they do this, no launcher for sparta.
+
+        });
         return services;
     }
 }
