@@ -26,7 +26,7 @@ public static class ServiceExtensions
             services.RegisterCoreOfflineServices()
             .RegisterStandardQuestServices()
             .RegisterNoLaunchSpartanServices(); //if they do this, no launcher for sparta.
-
+            additionalActions.Invoke(services);
         });
         return services;
     }

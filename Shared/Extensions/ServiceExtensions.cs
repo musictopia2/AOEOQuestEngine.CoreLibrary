@@ -24,6 +24,7 @@ public static class ServiceExtensions
         services.AddSingleton<ITacticsBusinessService, BasicTacticsBusinessService>();
         services.AddSingleton<ITacticsAutomation, CustomTacticsClass>();
         services.AddSingleton<IUnitProcessor, StandardUnitProcessor>();
+        services.AddSingleton<QuestRunContainer>(); //this is now core in order to make this work.
         return services;
     }
     //since a windows library has to use this as well.
