@@ -4,6 +4,8 @@ public static class ServiceExtensions
     public static IServiceCollection RegisterStandardQuestServices(this IServiceCollection services)
     {
         services.AddSingleton<IQuestSettings, SimpleQuestSettings>()
+            .AddSingleton<IQuestPreparationHandler, DefaultQuestPreparationHandler>() 
+            .AddSingleton<IQuestExtensionApplier, AccommodationQuestExtensionApplier>()
             .AddSingleton<IQuestConfigurator, NoOpQuestConfigurator>()
             .AddSingleton<IGlobalTechStrategy, NoGlobalTechStrategy>()
             .AddSingleton<IUnitRegistry, NoUnitService>();
