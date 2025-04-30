@@ -5,7 +5,7 @@ public class ChampionSharedQuestProcessor(
     ITechBusinessService businessService,
     ITacticsBusinessService tactics,
     IUnitProcessor units,
-    IClickLocationProvider location,
+    IPostLaunchAction post,
     IQuestPreparationHandler questPreparation,
     IQuestExtensionApplier questExtensions,
     ISpartanLaunchHandler launch,
@@ -42,7 +42,7 @@ public class ChampionSharedQuestProcessor(
         tactics.DoAllTactics();
         spartanUtilities.ExitSpartan();
         playService.OpenOfflineGame(dd1.SpartanDirectoryPath);
-        location.PopulateClickLocations();
+        post.RunAfterLaunch();
         questrunContainer.StartPlaying();
         launch.OnSpartanLaunched();
     }
