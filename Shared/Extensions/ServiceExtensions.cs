@@ -15,6 +15,7 @@ public static class ServiceExtensions
     {
         //this requires nothing else.
         services.AddSingleton<ISpartanLaunchHandler, DoNothingSpartanLaunchHandler>()
+            .AddSingleton<IPostLaunchAction, NoOpPostLaunchAction>()
             .AddSingleton<QuestMonitoringEndingContainer>(); //better to be safe than sorry
         return services;
     }
