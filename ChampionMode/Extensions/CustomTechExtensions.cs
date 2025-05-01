@@ -1,5 +1,7 @@
-﻿namespace AOEOQuestEngine.CoreLibrary.ChampionMode.Extensions;
-internal static class CustomTechExtensions
+﻿
+namespace AOEOQuestEngine.CoreLibrary.ChampionMode.Extensions;
+//must be public so can be used elsewhere for experimenting.
+public static class CustomTechExtensions
 {
     //private static void AddEmptyTech(this IAddTechsToTechTreeService techs, string name)
     //{
@@ -56,11 +58,24 @@ internal static class CustomTechExtensions
             techs.AddMiscTech(list, "GlobalTech");
         }
     }
+    //do just in case.
     public static IAddTechsToTechTreeService AddMiscTech(this IAddTechsToTechTreeService techs, BasicList<BasicEffectModel> effects, string name)
     {
+        return techs.AddMiscTech(effects, name, []);
+    }
+    public static IAddTechsToTechTreeService AddMiscTech(this IAddTechsToTechTreeService techs, BasicList<BasicEffectModel> effects, string name, BasicList<BasicPrereqModel> preReqs)
+    {
         XElement ourTech = TechTreeServices.StartNewTech(name);
-        BasicList<XElement> elements = EffectsServices.GetEffects(effects);
-        XElement source = TechTreeServices.GetEffects(elements);
+        BasicList<XElement> elements;
+        XElement source;
+        if (preReqs.Count > 0)
+        {
+            elements = PrereqsServices.GetPrereqs(preReqs);
+            source = TechTreeServices.GetPrereqs(elements);
+            ourTech.Add(source);
+        }
+        elements = EffectsServices.GetEffects(effects);
+        source = TechTreeServices.GetEffects(elements);
         ourTech.Add(source); //i think.
         techs!.Source!.Add(ourTech);
         return techs;
