@@ -10,7 +10,8 @@ public class ChampionSharedQuestProcessor(
     IQuestExtensionApplier questExtensions,
     ISpartanLaunchHandler launch,
     ISpartanUtilities spartanUtilities,
-    QuestRunContainer questrunContainer
+    QuestRunContainer questrunContainer,
+    IRmsHandler rmsHandler
     )
 {
     public async Task ProcessQuestAsync(string oldQuestPath)
@@ -41,6 +42,7 @@ public class ChampionSharedQuestProcessor(
         await businessService.DoAllTechsAsync();
         tactics.DoAllTactics();
         spartanUtilities.ExitSpartan();
+        await rmsHandler.CopyRmsFilesAsync();
         playService.OpenOfflineGame(dd1.SpartanDirectoryPath);
         post.RunAfterLaunch();
         questrunContainer.StartPlaying();
