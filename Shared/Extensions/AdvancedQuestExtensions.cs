@@ -7,15 +7,31 @@ public static class AdvancedQuestExtensions
         source.AddAutomationTownCenterTech();
         source.AddHumanTechLimited(seconds);
     }
+    public static void AddAllAccommodationHumanTechs(this XElement source, int seconds, TechIDManager manager)
+    {
+        source.AddHumanTechForever(manager);
+        source.AddAutomationTownCenterTech(manager);
+        source.AddHumanTechLimited(seconds, manager);
+    }
     public static void AddAllAccommodationComputerTechs(this XElement source, int seconds)
     {
         source.AddComputerTechForever();
         source.AddComputerTechLimited(seconds);
     }
+    public static void AddAllAccommodationComputerTechs(this XElement source, int seconds, TechIDManager manager)
+    {
+        source.AddComputerTechForever(manager);
+        source.AddComputerTechLimited(seconds, manager);
+    }
     public static void AddAllAccommodationTechs(this XElement source, int humanSeconds, int computerSeconds)
     {
         source.AddAllAccommodationHumanTechs(humanSeconds);
         source.AddAllAccommodationComputerTechs(computerSeconds);
+    }
+    public static void AddAllAccommodationTechs(this XElement source, int humanSeconds, int computerSeconds, TechIDManager manager)
+    {
+        source.AddAllAccommodationHumanTechs(humanSeconds, manager);
+        source.AddAllAccommodationComputerTechs(computerSeconds, manager);
     }
     public static void SetDelayedAttacksForAllComputerPlayers(this XElement source, int time)
     {
@@ -40,6 +56,14 @@ public static class AdvancedQuestExtensions
         int id = GetTechID();
         source.AddMapIntegerVariable("CustomHumanTechForever", id);
     }
+    public static void AddHumanTechForever(this XElement source, TechIDManager manager)
+    {
+        int id = manager.GetNextID;
+        //int id = GetTechID();
+        //source.AddMapIntegerVariable("CustomHumanTechForever", id);
+        source.AddMapIntegerVariable("CustomHumanTechForever", id);
+        manager.RegisterTech();
+    }
     public static void AddHumanTechLimited(this XElement source, int seconds) //can now decide when this tech expires in seconds.
     {
         int id = GetTechID();
@@ -47,17 +71,42 @@ public static class AdvancedQuestExtensions
         string toSend = $"{id},{seconds}";
         source.AddMapStringVariable("CustomHumanTechTemporarily", toSend);
     }
+    public static void AddHumanTechLimited(this XElement source, int seconds, TechIDManager manager) //can now decide when this tech expires in seconds.
+    {
+        int id = manager.GetNextID;
+        //int id = GetTechID();
+        //id++;
+        string toSend = $"{id},{seconds}";
+        source.AddMapStringVariable("CustomHumanTechTemporarily", toSend);
+        manager.RegisterTech();
+    }
     public static void AddAutomationTownCenterTech(this XElement source)
     {
         int id = GetTechID();
         id += 2;
         source.AddMapIntegerVariable("TechForAutomation", id);
     }
+    public static void AddAutomationTownCenterTech(this XElement source, TechIDManager manager)
+    {
+        int id = manager.GetNextID;
+        //int id = GetTechID();
+        //id += 2;
+        source.AddMapIntegerVariable("TechForAutomation", id);
+        manager.RegisterTech();
+    }
     public static void AddComputerTechForever(this XElement source)
     {
         int id = GetTechID();
         id += 3;
         source.AddMapIntegerVariable("CustomComputerTechForever", id);
+    }
+    public static void AddComputerTechForever(this XElement source, TechIDManager manager)
+    {
+        int id = manager.GetNextID;
+        //int id = GetTechID();
+        //id += 3;
+        source.AddMapIntegerVariable("CustomComputerTechForever", id);
+        manager.RegisterTech();
     }
     public static void AddComputerTechLimited(this XElement source, int seconds) //can now decide when this tech expires in seconds.
     {
@@ -66,11 +115,28 @@ public static class AdvancedQuestExtensions
         string toSend = $"{id},{seconds}";
         source.AddMapStringVariable("CustomComputerTechTemporarily", toSend);
     }
+    public static void AddComputerTechLimited(this XElement source, int seconds, TechIDManager manager) //can now decide when this tech expires in seconds.
+    {
+        int id = manager.GetNextID;
+        //int id = GetTechID();
+        //id += 4;
+        string toSend = $"{id},{seconds}";
+        source.AddMapStringVariable("CustomComputerTechTemporarily", toSend);
+        manager.RegisterTech();
+    }
     public static void AddGlobalTech(this XElement source)
     {
         int id = GetTechID();
         id += 5;
         source.AddMapIntegerVariable("CustomGlobalTechForever", id);
+    }
+    public static void AddGlobalTech(this XElement source, TechIDManager manager)
+    {
+        int id = manager.GetNextID;
+        //you have to use this for all now.
+        //id += 5;
+        source.AddMapIntegerVariable("CustomGlobalTechForever", id);
+        manager.RegisterTech();
     }
     private static int GetTechID()
     {

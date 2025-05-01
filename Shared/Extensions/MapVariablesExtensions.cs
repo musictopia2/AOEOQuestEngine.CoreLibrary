@@ -1,5 +1,6 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Extensions;
-internal static class MapVariablesExtensions
+//yuo need public so i can experiment more.
+public static class MapVariablesExtensions
 {
     public static void DeleteExistingMapVariable(this XElement source, string name)
     {

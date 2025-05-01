@@ -1,12 +1,16 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Extensions;
 public static class AccommodationExtensions
 {
-    public static void AddAccommodationQuestExtensions(this XElement source, IQuestSettings settings, IGlobalTechStrategy global)
+    public static void AddAccommodationQuestExtensions(this XElement source,
+        IQuestSettings settings, 
+        IGlobalTechStrategy global,
+        TechIDManager manager
+        )
     {
         //the source is the quest file.
         if (global.HasGlobalTech)
         {
-            source.AddGlobalTech(); //will have global stuff always for this version.
+            source.AddGlobalTech(manager); //will have global stuff always for this version.
         }
         if (settings.DelayedAttackTime > 0)
         {
@@ -14,23 +18,23 @@ public static class AccommodationExtensions
         }
         if (settings.HumanForeverEffects.Count > 0)
         {
-            source.AddHumanTechForever();
+            source.AddHumanTechForever(manager);
         }
         if (settings.HumanLimitedEffects.Count > 0)
         {
-            source.AddHumanTechLimited(settings.LimitedHumanEffectTime);
+            source.AddHumanTechLimited(settings.LimitedHumanEffectTime, manager);
         }
         if (settings.ComputerForeverEffects.Count > 0)
         {
-            source.AddComputerTechForever();
+            source.AddComputerTechForever(manager);
         }
         if (settings.ComputerLimitedEffects.Count > 0)
         {
-            source.AddComputerTechLimited(settings.LimitedComputerEffectTime);
+            source.AddComputerTechLimited(settings.LimitedComputerEffectTime, manager);
         }
         if (settings.Units.Count > 0)
         {
-            source.AddAutomationTownCenterTech();
+            source.AddAutomationTownCenterTech(manager);
         }
         if (settings.SeeAllMap)
         {

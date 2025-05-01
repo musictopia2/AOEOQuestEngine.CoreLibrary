@@ -24,6 +24,7 @@ public static class ServiceExtensions
     {
         //anything else that could be needed but are advanced services.
         services.AddSingleton<ITechBusinessService, TechBusinessService>()
+            .AddSingleton<TechIDManager>()
             .AddSingleton<IAddTechsToCharacterService, NoTechsCharacterService>();
         services.AddSingleton<ITacticsBusinessService, BasicTacticsBusinessService>();
         services.AddSingleton<ITacticsAutomation, CustomTacticsClass>();
