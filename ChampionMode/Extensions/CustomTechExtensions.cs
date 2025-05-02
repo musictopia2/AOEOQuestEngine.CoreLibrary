@@ -65,15 +65,9 @@ public static class CustomTechExtensions
     }
     public static IAddTechsToTechTreeService AddMiscTech(this IAddTechsToTechTreeService techs, BasicList<BasicEffectModel> effects, string name, BasicList<BasicPrereqModel> preReqs)
     {
-        XElement ourTech = TechTreeServices.StartNewTech(name);
+        XElement ourTech = TechTreeServices.StartNewTech(name, preReqs); //this handles that part  now.
         BasicList<XElement> elements;
         XElement source;
-        if (preReqs.Count > 0)
-        {
-            elements = PrereqsServices.GetPrereqs(preReqs);
-            source = TechTreeServices.GetPrereqs(elements);
-            ourTech.Add(source);
-        }
         elements = EffectsServices.GetEffects(effects);
         source = TechTreeServices.GetEffects(elements);
         ourTech.Add(source); //i think.
