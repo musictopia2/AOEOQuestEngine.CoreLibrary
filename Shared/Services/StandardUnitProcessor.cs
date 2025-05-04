@@ -4,10 +4,15 @@ public class StandardUnitProcessor(IQuestSettings settings, IUnitRegistry regist
     XElement IUnitProcessor.GetUnitXML()
     {
         XElement entire = XElement.Load(dd1.RawUnitLocation);
+        HashSet<string> units = [];
         foreach (var item in settings.Units)
         {
-            IUnitHandler? unit = register.GetHandlerFor(item.ProtoName);
-            unit?.ProcessCustomUnit(entire, item);
+            units.Add(item.ProtoName);
+        }
+        foreach (var item in units)
+        {
+            IUnitHandler? unit = register.GetHandlerFor(item);
+            unit?.ProcessCustomUnit(entire);
         }
         return entire;
     }
