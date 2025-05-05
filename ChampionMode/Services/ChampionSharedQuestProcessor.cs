@@ -25,14 +25,11 @@ public class ChampionSharedQuestProcessor(
             throw new CustomBasicException("Must set the new game path ahead of time now");
         }
         await questPreparation.PrepareAsync();
-        await businessService.DoAllTechsAsync(); //i think
         await characterService.CopyCharacterFilesAsync();
         //comes from the quest service.
         XElement source = XElement.Load(oldQuestPath);
         source.MakeChampionMode();
         questExtensions.ApplyExtensions(source);
-        //something else needs to populate this.
-        //source.AddAccommodationQuestExtensions(questSettings, global);
         source.Save(dd1.NewQuestPath);
         string content = ff1.AllText(dd1.NewQuestPath);
         content = content.Replace("<onlycountelites>true</onlycountelites>", "<onlycountelites>false</onlycountelites>");
