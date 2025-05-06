@@ -2,17 +2,18 @@
 public static class CustomTechsExtensions
 {
     //so somebody can just have global forever with self heal if necessary.
-    public static void StartGlobalForeverActivationWithSelfHeal(this IConfigurableQuestData config)
+    public static IConfigurableQuestData StartGlobalForeverActivationWithSelfHeal(this IConfigurableQuestData config)
     {
         config.TechData.StartGlobalForeverActivation();
         config.ApplyGlobalSelfHealing();
+        return config;
     }
     private static void ApplyGlobalSelfHealing(this IConfigurableQuestData config)
     {
         var effect = EffectsServices.GetEnableSelfHeal(uu1.Unit);
         config.TechData.AddEffect(effect);
     }
-    public static void AddQuickCompleteQuest(this IConfigurableQuestData configure)
+    public static IConfigurableQuestData AddQuickCompleteQuest(this IConfigurableQuestData configure)
     {
         BasicList<BasicEffectModel> list = [];
         BasicEffectModel effect;
@@ -32,8 +33,9 @@ public static class CustomTechsExtensions
         configure.TechData.StartHumanForeverActivation();
         configure.TechData.AddSeveralEffects(list);
         configure.SeeAllMap = true;
+        return configure;
     }
-    public static void AddExperimentBuild(this IConfigurableQuestData configure)
+    public static IConfigurableQuestData AddExperimentBuild(this IConfigurableQuestData configure)
     {
         //this allows for testing so you can quickly test many conditions like population, age, tech researched, etc.
         configure.TechData.StartHumanForeverActivation();
@@ -80,5 +82,6 @@ public static class CustomTechsExtensions
             Value = "200.00"
         };
         configure.TechData.AddEffect(effect);
+        return configure;
     }
 }
