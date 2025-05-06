@@ -3,11 +3,10 @@ public static class ServiceExtensions
 {
     public static IServiceCollection RegisterStandardQuestServices(this IServiceCollection services)
     {
-        services.AddSingleton<IQuestSettings, SimpleQuestSettings>()
+        services.AddSingleton<QuestDataContainer>()
             .AddSingleton<IQuestPreparationHandler, DefaultQuestPreparationHandler>() 
-            .AddSingleton<IQuestExtensionApplier, AccommodationQuestExtensionApplier>()
+            .AddSingleton<IQuestExtensionApplier, DefaultQuestExtensionApplier>()
             .AddSingleton<IQuestConfigurator, NoOpQuestConfigurator>()
-            .AddSingleton<IGlobalTechStrategy, NoGlobalTechStrategy>()
             .AddSingleton<IUnitRegistry, NoUnitService>();
         return services;
     }
@@ -23,9 +22,9 @@ public static class ServiceExtensions
     public static IServiceCollection RegisterCoreOfflineServices(this IServiceCollection services)
     {
         //anything else that could be needed but are advanced services.
-        services.AddSingleton<ITechBusinessService, TechBusinessService>()
-            .AddSingleton<TechIDManager>()
+        services.AddSingleton<ITechBusinessService, AdvancedTechBusinessService>()
             .AddSingleton<IRmsHandler, NoCopyRmsHandler>()
+            .AddSingleton<IAddStronglyTypedTechsService, DefaultAddStronglyTypedService>()
             .AddSingleton<IAddTechsToCharacterService, NoTechsCharacterService>();
         services.AddSingleton<ITacticsBusinessService, BasicTacticsBusinessService>();
         services.AddSingleton<ITacticsAutomation, CustomTacticsClass>();

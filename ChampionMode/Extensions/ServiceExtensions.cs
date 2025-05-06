@@ -7,7 +7,6 @@ public static class ServiceExtensions
             .AddSingleton<ChampionSharedQuestProcessor>()
             .RegisterCoreOfflineServices()
             .RegisterCoreQuestQuestProcessorServices()
-            .AddSingleton<IAddTechsToTechTreeService, ChampionCustomTechClass>()
             .RegisterStandardQuestServices()
             .RegisterNoLaunchSpartanServices();
         additionalActions.Invoke(services); //major but here.
@@ -19,9 +18,7 @@ public static class ServiceExtensions
         services.RegisterBasicsForTesting(services =>
         {
             services.AddSingleton<IQuestLocatorService, L>()
-                    .AddSingleton<ChampionSharedQuestProcessor>()
-                .AddSingleton<IAddTechsToCharacterService, NoTechsCharacterService>()
-                .AddSingleton<IAddTechsToTechTreeService, ChampionCustomTechClass>();
+                    .AddSingleton<ChampionSharedQuestProcessor>();
             services.AddSingleton<IPlayQuestViewModel, ChampionTestSingleQuestViewModel>();
             services.RegisterCoreOfflineServices()
             .RegisterStandardQuestServices()

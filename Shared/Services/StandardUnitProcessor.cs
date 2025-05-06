@@ -1,18 +1,17 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Services;
-public class StandardUnitProcessor(IQuestSettings settings, IUnitRegistry register) : IUnitProcessor
+public class StandardUnitProcessor(QuestDataContainer container, IUnitRegistry register) : IUnitProcessor
 {
     XElement IUnitProcessor.GetUnitXML()
     {
         XElement entire = XElement.Load(dd1.RawUnitLocation);
-        HashSet<string> units = [];
-        foreach (var item in settings.Units)
+        foreach (var item in container.TechData.AllTechs)
         {
-            units.Add(item.ProtoName);
-        }
-        foreach (var item in units)
-        {
-            IUnitHandler? unit = register.GetHandlerFor(item);
-            unit?.ProcessCustomUnit(entire);
+
+            foreach (var temp in item.Units)
+            {
+                IUnitHandler? unit = register.GetHandlerFor(temp.ProtoName);
+                unit?.ProcessCustomUnit(entire); //i broke it now.
+            }
         }
         return entire;
     }

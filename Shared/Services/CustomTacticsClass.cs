@@ -1,13 +1,49 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Services;
-public class CustomTacticsClass(IQuestSettings settings) : ITacticsAutomation
+public class CustomTacticsClass(QuestDataContainer container) : ITacticsAutomation
 {
     XElement ITacticsAutomation.GetAutomatedTactics(XElement source)
     {
-        if (settings.Units.Count == 0)
+        UnitCounter counter = new();
+        foreach (var tech in container.TechData.AllTechs)
         {
-            return source;
+            foreach (var unit in tech.Units)
+            {
+                AddItem(source, unit, counter.GetNextUnitId);
+            }
         }
-        settings.AddTownCenterTacticsForCustomUnits(source);
+        XElement tactic = source.Element("tactic")!;
+        string text;
+        counter.Reset();
+        foreach (var tech in container.TechData.AllTechs)
+        {
+            foreach (var unit in tech.Units)
+            {
+                text = $"""
+                <action>Spawn_{unit.ProtoName}{counter.GetNextUnitId}</action>
+                """;
+                tactic.Add(XElement.Parse(text));
+            }
+        }
         return source;
+    }
+    private static void AddItem(XElement source, CustomUnitModel unit, int id)
+    {
+        string text;
+        text = $"""
+            <action>
+            	<name>Spawn_{unit.ProtoName}{id}</name>
+            	<type>Maintain</type>
+            	<MaintainEntry>
+            	  <TrainCount>{unit.HowMany}</TrainCount>
+            	  <UnitsOwned>{unit.HowMany}</UnitsOwned>
+            	  <RateMultiplier>1.0</RateMultiplier>
+            	  <TrainProtoUnit>{unit.ProtoName}</TrainProtoUnit>
+            	</MaintainEntry>
+            	<active>0</active>
+            	<singleuse>1</singleuse>
+            	<persistent>1</persistent>
+            </action>
+            """;
+        source.Add(XElement.Parse(text));
     }
 }

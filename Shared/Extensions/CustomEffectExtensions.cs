@@ -1,7 +1,7 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Extensions;
-public static class CustomTechExtensions
+public static class CustomEffectExtensions
 {
-    public static void AddQuickCompleteQuest(this IQuestSettings settings)
+    public static void AddQuickCompleteQuest(this IConfigurableQuestData configure)
     {
         BasicList<BasicEffectModel> list = [];
         BasicEffectModel effect;
@@ -18,54 +18,56 @@ public static class CustomTechExtensions
             Value = "1000.0000"
         };
         list.Add(effect);
-        settings.HumanForeverEffects.AddRange(list);
-        settings.SeeAllMap = true;
+        configure.TechData.StartHumanForeverActivation();
+        configure.TechData.AddSeveralEffects(list);
+        configure.SeeAllMap = true;
     }
-    public static void AddExperimentBuild(this IQuestSettings questSettings)
+    public static void AddExperimentBuild(this IConfigurableQuestData configure)
     {
         //this allows for testing so you can quickly test many conditions like population, age, tech researched, etc.
+        configure.TechData.StartHumanForeverActivation();
         BasicEffectModel effect;
         effect = new TechAllCostAllModel()
         {
             Value = "0.1000"
         };
-        questSettings.HumanForeverEffects.Add(effect);
+        configure.TechData.AddEffect(effect);
         effect = new TechAllResearchPointsModel()
         {
             Value = "0.1000"
         };
-        questSettings.HumanForeverEffects.Add(effect);
-        questSettings.HumanForeverEffects.AddRange(EffectsServices.GetStartingResources("5000"));
+        configure.TechData.AddEffect(effect);
+        configure.TechData.AddSeveralEffects(EffectsServices.GetStartingResources("5000"));
         effect = new BuildPointsModel()
         {
             ProtoUnit = "building",
             Value = "0.1000"
         };
-        questSettings.HumanForeverEffects.Add(effect);
+        configure.TechData.AddEffect(effect);
         effect = new CostAllModel()
         {
             ProtoUnit = "all",
             Value = "0.1000"
         };
-        questSettings.HumanForeverEffects.Add(effect);
+        configure.TechData.AddEffect(effect);
 
         effect = new TrainingPointsModel()
         {
             ProtoUnit = "unit",
             Value = "0.1000"
         };
-        questSettings.HumanForeverEffects.Add(effect);
+        configure.TechData.AddEffect(effect);
         effect = new PopulationCapAdditionModel()
         {
             ProtoUnit = uu1.TownCenter,
             Value = "200.00"
         };
-        questSettings.HumanForeverEffects.Add(effect);
+        configure.TechData.AddEffect(effect);
         effect = new PopulationExtraModel()
         {
             ProtoUnit = uu1.TownCenter,
             Value = "200.00"
         };
-        questSettings.HumanForeverEffects.Add(effect);
+        configure.TechData.AddEffect(effect);
     }
 }

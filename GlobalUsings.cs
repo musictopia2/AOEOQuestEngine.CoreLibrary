@@ -30,3 +30,5 @@ global using AOEOQuestEngine.CoreLibrary.Shared.Configurations;
 global using QuestTesterLibrary.ViewModels;
 global using AOEOQuestEngine.CoreLibrary.ChampionMode.ViewModels;
 global using uu1 = AOEOBasicDataLibrary.Helpers.UnitGroupConstants;
+global using oo1 = AOEOTechEditorLibrary.Prereqs.TechConditionOperators;
+global using CommonBasicLibraries.BasicUIProcesses;
