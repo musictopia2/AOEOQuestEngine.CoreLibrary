@@ -7,7 +7,7 @@ public static class CustomTechsExtensions
         config.TechData.StartGlobalForeverActivation();
         config.ApplyGlobalSelfHealing();
     }
-    public static void ApplyGlobalSelfHealing(this IConfigurableQuestData config)
+    private static void ApplyGlobalSelfHealing(this IConfigurableQuestData config)
     {
         var effect = EffectsServices.GetEnableSelfHeal(uu1.Unit);
         config.TechData.AddEffect(effect);
