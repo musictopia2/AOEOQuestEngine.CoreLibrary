@@ -68,7 +68,7 @@ public static class CustomTechExtensions
         XElement ourTech = TechTreeServices.StartNewTech(name, preReqs); //this handles that part  now.
         BasicList<XElement> elements;
         XElement source;
-        elements = EffectsServices.GetEffects(effects);
+        elements = EffectsSerialization.GetEffects(effects);
         source = TechTreeServices.GetEffects(elements);
         ourTech.Add(source); //i think.
         techs!.Source!.Add(ourTech);
