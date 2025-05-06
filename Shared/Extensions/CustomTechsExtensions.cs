@@ -1,6 +1,17 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Extensions;
-public static class CustomEffectExtensions
+public static class CustomTechsExtensions
 {
+    //so somebody can just have global forever with self heal if necessary.
+    public static void StartGlobalForeverActivationWithSelfHeal(this IConfigurableQuestData config)
+    {
+        config.TechData.StartGlobalForeverActivation();
+        config.ApplyGlobalSelfHealing();
+    }
+    public static void ApplyGlobalSelfHealing(this IConfigurableQuestData config)
+    {
+        var effect = EffectsServices.GetEnableSelfHeal(uu1.Unit);
+        config.TechData.AddEffect(effect);
+    }
     public static void AddQuickCompleteQuest(this IConfigurableQuestData configure)
     {
         BasicList<BasicEffectModel> list = [];
