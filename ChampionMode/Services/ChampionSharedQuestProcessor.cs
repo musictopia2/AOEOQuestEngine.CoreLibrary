@@ -30,10 +30,14 @@ public class ChampionSharedQuestProcessor(
         XElement source = XElement.Load(oldQuestPath);
         source.MakeChampionMode();
         questExtensions.ApplyExtensions(source);
+
+        
+
+
         source.Save(dd1.NewQuestPath);
-        string content = ff1.AllText(dd1.NewQuestPath);
-        content = content.Replace("<onlycountelites>true</onlycountelites>", "<onlycountelites>false</onlycountelites>");
-        ff1.WriteAllText(dd1.NewQuestPath, content); //i think i need this too.
+        //string content = ff1.AllText(dd1.NewQuestPath);
+        //content = content.Replace("<onlycountelites>true</onlycountelites>", "<onlycountelites>false</onlycountelites>");
+        //ff1.WriteAllText(dd1.NewQuestPath, content); //i think i need this too.
         source = units.GetUnitXML();
         source.Save(dd1.NewUnitLocation);
         await businessService.DoAllTechsAsync();

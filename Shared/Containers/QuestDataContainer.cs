@@ -1,4 +1,5 @@
-﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Containers;
+﻿
+namespace AOEOQuestEngine.CoreLibrary.Shared.Containers;
 public class QuestDataContainer(ICivilizationContext civContext) : IConfigurableQuestData
 {
     public TechMatrixService TechData { get; private set; } = new();
@@ -6,6 +7,7 @@ public class QuestDataContainer(ICivilizationContext civContext) : IConfigurable
     // Quest-specific settings
     private int _delayedAttackTime;
     private bool _seeAllMap;
+    private EnumQuestNotificationMode _questNotificationMode;
     int IConfigurableQuestData.DelayedAttackTime
     {
         get => _delayedAttackTime;
@@ -27,6 +29,12 @@ public class QuestDataContainer(ICivilizationContext civContext) : IConfigurable
     }
     public string CivAbb => civContext!.CivAbb;
 
+    EnumQuestNotificationMode IConfigurableQuestData.QuestNotificationMode
+    {
+        get => _questNotificationMode;
+        set => _questNotificationMode = value;
+    }
+
     // Reset quest-related settings
     public void Clear()
     {
@@ -45,6 +53,26 @@ public class QuestDataContainer(ICivilizationContext civContext) : IConfigurable
         {
             source.AddMapBoolVariable("SeeAll", true);
         }
+        string serverVariable;
+        int value;
+        serverVariable = "QuestNotificationMode";
+        if (_questNotificationMode == EnumQuestNotificationMode.None)
+        {
+            return; //default
+        }
+        if (_questNotificationMode == EnumQuestNotificationMode.OcrFriendly)
+        {
+            value = 1;
+        }
+        else if (_questNotificationMode == EnumQuestNotificationMode.UiFriendly)
+        {
+            value = 2;
+        }
+        else
+        {
+            return;
+        }
+        source.AddMapIntegerVariable(serverVariable, value);
         //do the simple ones here.  the more complex do somewhere else.
     }
     private static void SetDelayedAttacksForAllComputerPlayers(XElement source, int time)

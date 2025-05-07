@@ -6,6 +6,15 @@ public static class ChampionModeExtensions
         //this will not care where the file came from.
         source.Part1ChampionMode();
         source.RemoveOptionalChallenges();
+        // Find all <onlycountelites> elements and replace their values
+        foreach (var element in source.Descendants("onlycountelites"))
+        {
+            if (element.Value == "true")
+            {
+                // Change the value to false if it was true
+                element.SetValue("false");
+            }
+        }
     }
     private static void Part1ChampionMode(this XElement source)
     {
