@@ -6,10 +6,14 @@ public class StandardUnitProcessor(QuestDataContainer container, IUnitRegistry r
         XElement entire = XElement.Load(dd1.RawUnitLocation);
         foreach (var item in container.TechData.AllTechs)
         {
-
+            HashSet<string> units = [];
             foreach (var temp in item.Units)
             {
-                IUnitHandler? unit = register.GetHandlerFor(temp.ProtoName);
+                units.Add(temp.ProtoName);
+            }
+            foreach (var temp in units)
+            {
+                IUnitHandler? unit = register.GetHandlerFor(temp);
                 unit?.ProcessCustomUnit(entire); //i broke it now.
             }
         }
