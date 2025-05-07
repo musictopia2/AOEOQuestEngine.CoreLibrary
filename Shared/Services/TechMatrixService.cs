@@ -3,6 +3,14 @@ public class TechMatrixService
 {
     public BasicList<CustomTechModel> AllTechs { get; private set; } = [];
     private CustomTechModel? _current;
+    public void CreateVillagerUnitTech()
+    {
+        //not sure if this is going to work out but forced to take a risk..
+        StartHumanForeverActivation();
+        _current!.IsVillager = true;
+        AllTechs.Add(_current);
+        _current = null; // Only clears your temporary reference, not the stored one
+    }
     public void AddCustomUnit(string unitName, int count)
     {
         if (_current == null)

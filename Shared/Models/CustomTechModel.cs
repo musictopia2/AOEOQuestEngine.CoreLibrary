@@ -10,4 +10,5 @@ public class CustomTechModel
     public BasicList<BasicEffectModel> Effects { get; set; } = [];
     public BasicList<BasicPrereqModel> Prereqs { get; set; } = [];
     public BasicList<CustomUnitModel> Units { get; set; } = [];
+    public bool IsVillager { get; set; }
 }
