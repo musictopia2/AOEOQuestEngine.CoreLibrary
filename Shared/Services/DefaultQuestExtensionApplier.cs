@@ -23,10 +23,16 @@ public class DefaultQuestExtensionApplier(QuestDataContainer container) : IQuest
             }
         }
         string value;
-        value = GetActivatedEffects(humanIds, humanList);
-        source.AddMapStringVariable("CustomHumanMultipleFlexibleTechs", value);
-        value = GetActivatedEffects(computerIds, computerList);
-        source.AddMapStringVariable("CustomComputerMultipleFlexibleTechs", value);
+        if (humanIds.Count > 0)
+        {
+            value = GetActivatedEffects(humanIds, humanList);
+            source.AddMapStringVariable("CustomHumanMultipleFlexibleTechs", value);
+        }
+        if (computerIds.Count > 0)
+        {
+            value = GetActivatedEffects(computerIds, computerList);
+            source.AddMapStringVariable("CustomComputerMultipleFlexibleTechs", value);
+        }
     }
     private static string GetActivatedEffects(BasicList<int> ids, BasicList<CustomTechModel> techs)
     {
