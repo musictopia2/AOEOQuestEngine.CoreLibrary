@@ -25,7 +25,7 @@ public static class ServiceExtensions
         services.AddSingleton<ITechBusinessService, AdvancedTechBusinessService>()
             .AddSingleton<IRmsHandler, NoCopyRmsHandler>()
             .AddSingleton<IAddStronglyTypedTechsService, DefaultAddStronglyTypedService>()
-            .AddSingleton<IAddTechsToCharacterService, NoTechsCharacterService>();
+            .AddSingleton<IAddTechsToCharacterService, DefaultAddCharacterService>();
         services.AddSingleton<ITacticsBusinessService, BasicTacticsBusinessService>();
         services.AddSingleton<ITacticsAutomation, CustomTacticsClass>();
         services.AddSingleton<IUnitProcessor, StandardUnitProcessor>();

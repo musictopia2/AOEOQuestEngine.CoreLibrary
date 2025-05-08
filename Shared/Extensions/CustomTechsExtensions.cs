@@ -78,7 +78,6 @@ public static class CustomTechsExtensions
         configure.TechData.AddEffect(effect);
         effect = new PopulationExtraModel()
         {
-            ProtoUnit = uu1.TownCenter,
             Value = "200.00"
         };
         configure.TechData.AddEffect(effect);

@@ -1,28 +1,82 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Services;
 public class TechMatrixService
 {
+    private enum EnumCaller
+    {
+        None,
+        Effects,
+        Units,
+        Villagers
+    }
     public BasicList<CustomTechModel> AllTechs { get; private set; } = [];
     private CustomTechModel? _current;
-    public void CreateVillagerUnitTech()
+    public void AddVillagers(int villagersToSpawn)
     {
-        //not sure if this is going to work out but forced to take a risk..
-        StartHumanForeverActivation();
-        _current!.IsVillager = true;
-        AllTechs.Add(_current);
-        _current = null; // Only clears your temporary reference, not the stored one
+        // Ensure at least one villager is spawned
+        if (villagersToSpawn <= 0)
+        {
+            throw new CustomBasicException("Must spawn at least one villager");
+        }
+        Validate(EnumCaller.Villagers);
+        _current!.VillagersToSpawn = villagersToSpawn;
     }
-    public void AddCustomUnit(string unitName, int count)
+    private void Validate(EnumCaller caller)
     {
         if (_current == null)
         {
             throw new CustomBasicException("Must start first.");
         }
-
+        if (caller == EnumCaller.Effects)
+        {
+            //effects is calling this.
+            if (_current.Units.Count > 0)
+            {
+                throw new CustomBasicException("There was already units so can't add effects");
+            }
+            if (_current.VillagersToSpawn > 0)
+            {
+                throw new CustomBasicException("There was already villagers to spawn so can't add effects");
+            }
+            return;
+        }
         if (_current.Effects.Count > 0)
+        {
+            if (caller == EnumCaller.Units)
+            {
+                throw new CustomBasicException("Cannot add units because you had other effects");
+            }
+            else
+            {
+                throw new CustomBasicException("Cannot spawn villagers because you had other effects");
+            }
+        }
+        if (caller == EnumCaller.Units)
+        {
+            if (_current.VillagersToSpawn > 0)
+            {
+                throw new CustomBasicException("You cannot add units because you spawned villagers");
+            }
+            return;
+        }
+        if (caller == EnumCaller.Villagers)
+        {
+            if (_current.Units.Count > 0)
+            {
+                throw new CustomBasicException("You cannot spawn villagers because you already spawned custom units");
+            }
+            return;
+        }
+        throw new CustomBasicException("Wrong caller");
+    }
+    public void AddCustomUnit(string unitName, int count)
+    {
+        Validate(EnumCaller.Units);
+       
+        if (_current!.Effects.Count > 0)
         {
             throw new CustomBasicException("You already added effects.");
         }
-
+        
         if (_current.ActivationType is EnumActivationType.LimitedTime or EnumActivationType.Timespan)
         {
             throw new CustomBasicException("Cannot add custom units with LimitedTime or Timespan activations.");
@@ -44,32 +98,14 @@ public class TechMatrixService
 
     public void AddEffect(BasicEffectModel effect)
     {
-        if (_current == null)
-        {
-            throw new CustomBasicException("Needs to start first.");
-        }
+        Validate(EnumCaller.Effects);
 
-        if (_current.Units.Count > 0)
-        {
-            throw new CustomBasicException("Cannot add effect because custom units already exist.");
-        }
-
-        _current.Effects.Add(effect);
+        _current!.Effects.Add(effect);
     }
-
     public void AddSeveralEffects(BasicList<BasicEffectModel> effects)
     {
-        if (_current == null)
-        {
-            throw new CustomBasicException("Needs to start first.");
-        }
-
-        if (_current.Units.Count > 0)
-        {
-            throw new CustomBasicException("Cannot add effects because custom units already exist.");
-        }
-
-        _current.Effects.AddRange(effects);
+        Validate(EnumCaller.Effects);
+        _current!.Effects.AddRange(effects);
     }
     private void StartActivation(EnumRecipentType recipientType, EnumActivationType activationType, int time = 0, int startTime = 0, int endTime = 0)
     {
@@ -286,7 +322,6 @@ public class TechMatrixService
             RecipientType = EnumRecipentType.Computer,
             ActivationType = EnumActivationType.Forever
         };
-
         AddPrerequisite(new TypeCountModel()
         {
             Operator = oo1.GreaterThanEqual,
@@ -297,7 +332,6 @@ public class TechMatrixService
 
         AllTechs.Add(_current);
     }
-
     public void StartGlobalSimpleUnitRequirement(string unit, int count)
     {
         _current = new CustomTechModel()
@@ -305,7 +339,6 @@ public class TechMatrixService
             RecipientType = EnumRecipentType.GlobalObtainable,
             ActivationType = EnumActivationType.Forever
         };
-
         AddPrerequisite(new TypeCountModel()
         {
             Operator = oo1.GreaterThanEqual,
@@ -313,7 +346,6 @@ public class TechMatrixService
             State = "aliveState",
             Count = count
         });
-
         AllTechs.Add(_current);
     }
 }

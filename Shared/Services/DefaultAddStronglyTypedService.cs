@@ -3,8 +3,6 @@ public class DefaultAddStronglyTypedService(QuestDataContainer container) : Base
 {
     public override void ApplyTechsToTree()
     {
-        //this should be the only thing i need.
-        //this time, don't worry about extensions.   just do here.
         BasicTechModel current;
         UnitCounter counter = new();
         foreach (var item in container.TechData.AllTechs)
@@ -22,19 +20,42 @@ public class DefaultAddStronglyTypedService(QuestDataContainer container) : Base
             {
                 current = TechTreeServices.CreateNewTechModel(global);
             }
-            if (item.Units.Count == 0)
+            if (item.Units.Count == 0 && item.VillagersToSpawn == 0)
             {
                 current.Effects = item.Effects;
                 current.Prereqs = item.Prereqs;
+                //this is helpful for eventually having on demand techs.
+                //if research points are set, then even with no cost, you don't get the tech.
+                //unless you can figure out how to show a building to show you are going to get it.
+                //current.ResearchPoints = "3.000"; //well see if i get in 3 seconds or not.
             }
-            else
+
+            else if (item.Units.Count > 0)
             {
                 //figure out the units in the new system.
                 AddUnit(current, item, container.CivAbb, counter);
             }
+            else
+            {
+                AddVillager(current, item, container.CivAbb, counter);
+            }
             AdditionalTechs.Add(current);
 
         }
+    }
+    private static void AddVillager(BasicTechModel current,
+        CustomTechModel activate,
+        string civAbb,
+        UnitCounter counter)
+    {
+        string name = CustomVillagerClass.SupportedProtoName;
+        int index = counter.GetNextUnitId;
+        string actionName = $"Spawn_{name}{index}";
+        BasicEffectModel effect = EffectsServices.GetCustomTactic(actionName, $"{civAbb}_bldg_TownCenter");
+        current.Effects.Add(effect);
+        effect = EffectsServices.GetPopulationCapAdditional(uu1.TownCenter, "100.0000");
+        effect.Relativity = "Absolute";
+        current.Prereqs = activate.Prereqs;
     }
     private static void AddUnit(BasicTechModel current,
         CustomTechModel activate,

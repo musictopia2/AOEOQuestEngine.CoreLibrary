@@ -10,6 +10,12 @@ public class CustomTacticsClass(QuestDataContainer container) : ITacticsAutomati
             {
                 AddItem(source, unit, counter.GetNextUnitId);
             }
+            if (tech.VillagersToSpawn > 0)
+            {
+                //do the villager part here.
+                CustomUnitModel villager = new(CustomVillagerClass.SupportedProtoName, tech.VillagersToSpawn);
+                AddItem(source, villager, counter.GetNextUnitId);
+            }
         }
         XElement tactic = source.Element("tactic")!;
         string text;
@@ -20,6 +26,13 @@ public class CustomTacticsClass(QuestDataContainer container) : ITacticsAutomati
             {
                 text = $"""
                 <action>Spawn_{unit.ProtoName}{counter.GetNextUnitId}</action>
+                """;
+                tactic.Add(XElement.Parse(text));
+            }
+            if (tech.VillagersToSpawn > 0)
+            {
+                text = $"""
+                <action>Spawn_{CustomVillagerClass.SupportedProtoName}{counter.GetNextUnitId}</action>
                 """;
                 tactic.Add(XElement.Parse(text));
             }

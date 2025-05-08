@@ -17,6 +17,13 @@ public class StandardUnitProcessor(QuestDataContainer container, IUnitRegistry r
                 unit?.ProcessCustomUnit(entire); //i broke it now.
             }
         }
+        if (container.TechData.AllTechs.Any(x => x.VillagersToSpawn > 0) == false)
+        {
+            return entire;
+        }
+        //now villager.
+        IUnitHandler villager = new CustomVillagerClass(container);
+        villager.ProcessCustomUnit(entire);
         return entire;
     }
 }

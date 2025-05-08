@@ -22,6 +22,8 @@ public class DefaultQuestExtensionApplier(QuestDataContainer container) : IQuest
                 computerList.Add(tech);
             }
         }
+        //one more at the end here.
+
         string value;
         if (humanIds.Count > 0)
         {
@@ -64,7 +66,7 @@ public class DefaultQuestExtensionApplier(QuestDataContainer container) : IQuest
                     innerParts.Add($"EndTime:{effect.EndTime}");
                     break;
             }
-            if (effect.Units.Count > 0)
+            if (effect.Units.Count > 0 || effect.VillagersToSpawn > 0)
             {
                 innerParts.Add("CustomUnit:True");
             }
