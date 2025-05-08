@@ -55,6 +55,7 @@ public class DefaultAddStronglyTypedService(QuestDataContainer container) : Base
         current.Effects.Add(effect);
         effect = EffectsServices.GetPopulationCapAdditional(uu1.TownCenter, "100.0000");
         effect.Relativity = "Absolute";
+        current.Effects.Add(effect);
         current.Prereqs = activate.Prereqs;
     }
     private static void AddUnit(BasicTechModel current,
