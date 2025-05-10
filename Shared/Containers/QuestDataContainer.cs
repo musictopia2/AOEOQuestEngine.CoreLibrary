@@ -39,7 +39,8 @@ public class QuestDataContainer(ICivilizationContext civContext) : IConfigurable
     }
     public BasicList<TrainableUnitModel> TrainableUnits { get; set; } = [];
     // Reset quest-related settings
-    internal async Task ClearAsync()
+    //needs to be public because a person may have to clear this and do other things for experiments.
+    public async Task ClearAsync()
     {
         TechData = new();
         _techNameService = new(); //just create a new one here.
