@@ -5,5 +5,14 @@ public class DefaultQuestPreparationHandler(QuestDataContainer container, IQuest
     {
         await container.ClearAsync();
         await config.ConfigureAsync(container);
+        container.TechData.AllTechs.ForEach(tech =>
+        {
+            tech.NormalizeTechState();
+            tech.Validate();
+        });
+        container.TrainableUnits.ForEach(unit =>
+        {
+            unit.Validate();
+        });
     }
 }

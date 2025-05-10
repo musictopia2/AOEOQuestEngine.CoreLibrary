@@ -131,8 +131,7 @@ public class DefaultUnitProcessor(QuestDataContainer container,
         //Pe_Bldg_TownCenter
         var availableTechs = GetAvailableTechColumns(originalUnit).GetEnumerator();
         var availableConsumables = GetAvailableUnitColumns(true).GetEnumerator();
-
-        container.TechData.AllTechs.ForConditionalItems(x => x.IsOnDemand, (tech) =>
+        container.TechData.AllTechs.ForConditionalItems(x => x.IsOnDemand, tech =>
         {
             if (tech.VillagersToSpawn > 0)
             {
