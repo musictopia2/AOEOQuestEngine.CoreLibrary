@@ -7,7 +7,9 @@ public static class ServiceExtensions
             .AddSingleton<IQuestPreparationHandler, DefaultQuestPreparationHandler>() 
             .AddSingleton<IQuestExtensionApplier, DefaultQuestExtensionApplier>()
             .AddSingleton<IQuestConfigurator, NoOpQuestConfigurator>()
-            .AddSingleton<IUnitRegistry, NoUnitService>();
+            .AddSingleton<IUnitRegistry, NoUnitService>()
+            .AddSingleton<ITrainableUnitRegistry, NoTrainableUnitsService>()
+            ;
         return services;
     }
     public static IServiceCollection RegisterNoLaunchSpartanServices(this IServiceCollection services)
