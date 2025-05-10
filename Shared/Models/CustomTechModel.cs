@@ -21,7 +21,7 @@ public class CustomTechModel
     public BasicList<CustomUnitModel> Units { get; set; } = [];
     public int VillagersToSpawn { get; set; }
     public bool IsOnDemand => ResearchPoints != "0.000" || Costs.Count != 0;
-    public void NormalizeConsumableTechState(int useIndex = 0, int totalUses = 1)
+    public void NormalizeConsumableTechState(int useIndex, int totalUses)
     {
         string display = "";
         string details = "";
@@ -29,18 +29,18 @@ public class CustomTechModel
         if (Units.Count == 1)
         {
             var unit = Units.Single();
-            display = $"{unit.ProtoName} Consumable (Use {useIndex + 1}/{totalUses})";
-            details = $"Spawns {unit.HowMany} {unit.ProtoName}(s) — Use {useIndex + 1} of {totalUses}";
+            display = $"{unit.ProtoName} Consumable (Use {useIndex}/{totalUses})";
+            details = $"Spawns {unit.HowMany} {unit.ProtoName}(s) — Use {useIndex} of {totalUses}";
         }
         else if (Units.Count > 1)
         {
-            display = $"Multi-Unit Consumable (Use {useIndex + 1}/{totalUses})";
-            details = $"Spawns multiple units — Use {useIndex + 1} of {totalUses}";
+            display = $"Multi-Unit Consumable (Use {useIndex}/{totalUses})";
+            details = $"Spawns multiple units — Use {useIndex} of {totalUses}";
         }
         else if (VillagersToSpawn > 0)
         {
-            display = $"Villager Consumable (Use {useIndex + 1}/{totalUses})";
-            details = $"Spawns {VillagersToSpawn} Villager(s) — Use {useIndex + 1} of {totalUses}";
+            display = $"Villager Consumable (Use {useIndex}/{totalUses})";
+            details = $"Spawns {VillagersToSpawn} Villager(s) — Use {useIndex} of {totalUses}";
         }
 
         if (!string.IsNullOrEmpty(display))
