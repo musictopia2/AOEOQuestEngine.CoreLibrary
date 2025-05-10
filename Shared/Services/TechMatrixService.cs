@@ -39,6 +39,10 @@ public class TechMatrixService
             }
             return;
         }
+        if (_current.RecipientType == EnumRecipentType.Computer)
+        {
+            throw new CustomBasicException("The computer can only get effects");
+        }
         if (_current.Effects.Count > 0)
         {
             if (caller == EnumCaller.Units)
@@ -348,4 +352,52 @@ public class TechMatrixService
         });
         AllTechs.Add(_current);
     }
+    public void SetName(string name)
+    {
+        if (_current is null)
+        {
+            throw new CustomBasicException("Did not start yet");
+        }
+        _current.Name = name;
+    }
+
+    #region On Demands
+    private void CheckOnDemannd()
+    {
+        if (_current == null)
+        {
+            throw new CustomBasicException("Activation has not been started yet.");
+        }
+        if (_current.RecipientType == EnumRecipentType.Computer)
+        {
+            throw new CustomBasicException("Cannot be on demand because this is for computer");
+        }
+    }
+    public void StartOnDemand()
+    {
+        CheckOnDemannd();
+        SetResearchPoints("1.0000"); //automate the reseach point.
+    }
+    public void SetResearchPoints(string value)
+    {
+        CheckOnDemannd();
+        _current!.ResearchPoints = value;
+    }
+
+    public void AddCost(EnumResource resource, string amount)
+    {
+        CheckOnDemannd();
+        _current!.Costs.Add(new CostModel(resource, amount));
+    }
+
+    public void SetDisplayInfo(string name, string description)
+    {
+        if (_current == null)
+        {
+            throw new CustomBasicException("Activation has not been started yet.");
+        }
+        _current.DisplayName = name;
+        _current.Details = description;
+    }
+    #endregion
 }

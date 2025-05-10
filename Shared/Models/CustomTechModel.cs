@@ -1,15 +1,109 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Models;
 public class CustomTechModel
 {
-    public string Name { get; set; } = ""; //if you specify a name for this, will use but if not, will generate one automatically when creating the tech.
-    public EnumActivationType ActivationType { get; set; }
-    public EnumRecipentType RecipientType { get; set; }
+    public string Name { get; set; } = "";
+    public string DisplayName { get; set; } = "";
+    public string Details { get; set; } = "";
+    // Quest timer window
     public int Time { get; set; }
     public int StartTime { get; set; }
     public int EndTime { get; set; }
+
+    // Time to research: "0.000" = instant (auto), else on-demand
+    public string ResearchPoints { get; set; } = "0.000";
+
+    // Costs related to this tech (e.g., resources, gold, etc.)
+    public BasicList<CostModel> Costs { get; set; } = [];
     public BasicList<BasicEffectModel> Effects { get; set; } = [];
     public BasicList<BasicPrereqModel> Prereqs { get; set; } = [];
+    public EnumActivationType ActivationType { get; set; }
+    public EnumRecipentType RecipientType { get; set; }
     public BasicList<CustomUnitModel> Units { get; set; } = [];
     public int VillagersToSpawn { get; set; }
-    //public bool IsVillager { get; set; }
+    public bool IsOnDemand => ResearchPoints != "0.000" || Costs.Count != 0;
+    public void NormalizeTechState()
+    {
+        // Handle DisplayName and Details normalization based on Units or VillagersToSpawn
+        string display = "";
+        string details = "";
+
+        // If there's exactly one unit, set display and details accordingly
+        if (Units.Count == 1)
+        {
+            var unit = Units.Single();
+            display = $"{unit.ProtoName} Consumable";
+            details = $"Spawn {unit.HowMany} {unit.ProtoName}s";
+        }
+        // If there are villagers to spawn, set display and details for villagers
+        else if (VillagersToSpawn > 0)
+        {
+            display = "Villager Consumable";
+            details = $"Spawn {VillagersToSpawn} Villagers";
+        }
+        // If neither, fall back to custom display name and details
+        else if (!string.IsNullOrEmpty(DisplayName) && !string.IsNullOrEmpty(Details))
+        {
+            display = DisplayName;
+            details = Details;
+        }
+
+        // Set the normalized DisplayName and Details if they were set during normalization
+        if (!string.IsNullOrEmpty(display))
+        {
+            DisplayName = display;
+        }
+        if (!string.IsNullOrEmpty(details))
+        {
+            Details = details;
+        }
+
+        // Optionally, you can also set additional logic here, such as adjusting the `RecipientType`
+        if (IsOnDemand && RecipientType == EnumRecipentType.Human)
+        {
+            // The computer won't need to know about on-demand techs, so it becomes GlobalObtainable
+            RecipientType = EnumRecipentType.GlobalObtainable;
+        }
+
+    }
+    public void Validate()
+    {
+        // Ensure there's at least one effect, unit, or villagers
+        if (Effects.Count == 0 && VillagersToSpawn == 0 && Units.Count== 0)
+        {
+            throw new CustomBasicException("There is no real tech here");
+        }
+        // Check the tech recipient type rules
+        if (RecipientType == EnumRecipentType.Computer)
+        {
+            // Computers can't have villagers or units
+            if (VillagersToSpawn > 0 || Units.Count > 0)
+            {
+                throw new CustomBasicException("The computer can't get units or villagers");
+            }
+            // Computers also can't have on-demand techs
+            if (IsOnDemand)
+            {
+                throw new CustomBasicException("The computer cannot do on demand techs");
+            }
+            return;  // If it's a computer tech, no need for further checks
+        }
+        // Villagers and units can't coexist in the same tech
+        if (VillagersToSpawn > 0 &&  Units.Count > 0)
+        {
+            throw new CustomBasicException("Must have different techs for villagers vs units");
+        }
+        // For on-demand techs: Validate specific fields
+        if (IsOnDemand)
+        {
+            if (string.IsNullOrEmpty(Name))
+            {
+                throw new CustomBasicException("On-demand techs require a name.");
+            }
+            if (string.IsNullOrEmpty(DisplayName) || string.IsNullOrEmpty(Details))
+            {
+                throw new CustomBasicException("On-demand techs without villagers must have a display name and details.");
+            }
+        }
+        //not sure what other rules i have for this.
+    }
 }
