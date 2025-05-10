@@ -132,51 +132,17 @@ public class DefaultUnitProcessor(QuestDataContainer container,
         var availableConsumables = GetAvailableUnitColumns(true).GetEnumerator();
         container.TechData.AllTechs.ForConditionalItems(x => x.IsOnDemand, tech =>
         {
-            if (tech.VillagersToSpawn > 0)
+            if (!availableConsumables.MoveNext())
             {
-                if (!availableConsumables.MoveNext())
-                {
-                    throw new InvalidOperationException("Too many consumables; no available placement slots.");
-                }
-                int column = availableConsumables.Current;
-                XElement newTech = new("Tech",
-                    new XAttribute("row", 0),
-                    new XAttribute("page", "0"),
-                    new XAttribute("column", column),
-                    tech.Name);
-                originalUnit.Add(newTech);
+                throw new InvalidOperationException("Too many consumables; no available placement slots.");
             }
-            else if (tech.Units.Count > 0)
-            {
-                foreach (var unit in tech.Units)
-                {
-                    if (!availableConsumables.MoveNext())
-                    {
-                        throw new InvalidOperationException("Too many consumables; no available placement slots.");
-                    }
-                    int column = availableConsumables.Current;
-                    XElement newTech = new("Tech",
-                        new XAttribute("row", 0),
-                        new XAttribute("page", "0"),
-                        new XAttribute("column", column),
-                        tech.Name);
-                    originalUnit.Add(newTech);
-                }
-            }
-            else
-            {
-                if (!availableTechs.MoveNext())
-                {
-                    throw new InvalidOperationException("Too many techs; no available placement slots.");
-                }
-                int column = availableTechs.Current;
-                XElement newTech = new("Tech",
-                    new XAttribute("row", 1),
-                    new XAttribute("page", "0"),
-                    new XAttribute("column", column),
-                    tech.Name);
-                originalUnit.Add(newTech);
-            }
+            int column = availableConsumables.Current;
+            XElement newTech = new("Tech",
+                new XAttribute("row", 0),
+                new XAttribute("page", "0"),
+                new XAttribute("column", column),
+                tech.Name);
+            originalUnit.Add(newTech);
         });
     }
 }
