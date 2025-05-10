@@ -37,7 +37,7 @@ public class QuestDataContainer(ICivilizationContext civContext) : IConfigurable
         get => _questNotificationMode;
         set => _questNotificationMode = value;
     }
-
+    public BasicList<TrainableUnitModel> TrainableUnits { get; set; } = [];
     // Reset quest-related settings
     internal async Task ClearAsync()
     {
@@ -45,6 +45,7 @@ public class QuestDataContainer(ICivilizationContext civContext) : IConfigurable
         _techNameService = new(); //just create a new one here.
         _techIdManager.Clear(); //i think.
         await _tables.ResetAsync();
+        TrainableUnits.Clear();
         _delayedAttackTime = 0;
         _seeAllMap= false;
     }
