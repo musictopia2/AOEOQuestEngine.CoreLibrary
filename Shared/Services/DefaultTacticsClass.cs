@@ -1,5 +1,5 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Services;
-public class CustomTacticsClass(QuestDataContainer container) : ITacticsAutomation
+public class DefaultTacticsClass(QuestDataContainer container) : ITacticsAutomation
 {
     XElement ITacticsAutomation.GetAutomatedTactics(XElement source)
     {

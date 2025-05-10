@@ -35,6 +35,14 @@ public class DefaultQuestExtensionApplier(QuestDataContainer container) : IQuest
             value = GetActivatedEffects(computerIds, computerList);
             source.AddMapStringVariable("CustomComputerMultipleFlexibleTechs", value);
         }
+        StrCat cats = new();
+        foreach (var c in container.TrainableUnits)
+        {
+            cats.AddToString(c.Name, ",");
+        }
+        string finalText = cats.GetInfo();
+        source.AddMapStringVariable("TrainUnits", finalText);
+
     }
     private static string GetActivatedEffects(BasicList<int> ids, BasicList<CustomTechModel> techs)
     {

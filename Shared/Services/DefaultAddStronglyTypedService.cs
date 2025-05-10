@@ -20,16 +20,25 @@ public class DefaultAddStronglyTypedService(QuestDataContainer container) : Base
             {
                 current = TechTreeServices.CreateNewTechModel(global);
             }
+            if (item.DisplayName != "")
+            {
+                current.DisplayNameID = container.InsertLocalizedString(item.DisplayName);
+            }
+            if (item.Details != "")
+            {
+                current.RolloverTextID = container.InsertLocalizedString(item.Details);
+            }
+            if (item.IsOnDemand)
+            {
+                current.ResearchPoints = item.ResearchPoints;
+                current.Icon = @"Celeste\UserInterface\Icons\Techs\C08TechMahoutMastery_ua";
+                current.Costs = item.Costs;
+            }
             if (item.Units.Count == 0 && item.VillagersToSpawn == 0)
             {
                 current.Effects = item.Effects;
                 current.Prereqs = item.Prereqs;
-                //this is helpful for eventually having on demand techs.
-                //if research points are set, then even with no cost, you don't get the tech.
-                //unless you can figure out how to show a building to show you are going to get it.
-                //current.ResearchPoints = "3.000"; //well see if i get in 3 seconds or not.
             }
-
             else if (item.Units.Count > 0)
             {
                 //figure out the units in the new system.
@@ -40,7 +49,6 @@ public class DefaultAddStronglyTypedService(QuestDataContainer container) : Base
                 AddVillager(current, item, container.CivAbb, counter);
             }
             AdditionalTechs.Add(current);
-
         }
     }
     private static void AddVillager(BasicTechModel current,

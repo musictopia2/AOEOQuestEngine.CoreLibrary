@@ -27,7 +27,7 @@ public static class ServiceExtensions
             .AddSingleton<IAddStronglyTypedTechsService, DefaultAddStronglyTypedService>()
             .AddSingleton<IAddTechsToCharacterService, DefaultAddCharacterService>();
         services.AddSingleton<ITacticsBusinessService, BasicTacticsBusinessService>();
-        services.AddSingleton<ITacticsAutomation, CustomTacticsClass>();
+        services.AddSingleton<ITacticsAutomation, DefaultTacticsClass>();
         services.AddSingleton<IUnitProcessor, DefaultUnitProcessor>();
         services.AddSingleton<QuestRunContainer>(); //this is now core in order to make this work.
         return services;
