@@ -63,7 +63,10 @@ public class CustomTechModel
             // The computer won't need to know about on-demand techs, so it becomes GlobalObtainable
             RecipientType = EnumRecipentType.GlobalObtainable;
         }
-
+        if (VillagersToSpawn > 0 && RecipientType == EnumRecipentType.GlobalObtainable)
+        {
+            RecipientType = EnumRecipentType.Human; //must be human because the random map script must disable a tech after recieving it.
+        }
     }
     public void Validate()
     {
