@@ -2,6 +2,7 @@
 public interface IConfigurableQuestData
 {
     TechMatrixService TechData { get; }
+    string GetNextName(string key);
     //needs to do through here now.
     int DelayedAttackTime { get; set; }
     bool SeeAllMap { get; set; }

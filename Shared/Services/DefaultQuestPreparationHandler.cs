@@ -1,9 +1,9 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Services;
 public class DefaultQuestPreparationHandler(QuestDataContainer container, IQuestConfigurator config) : IQuestPreparationHandler
 {
-    Task IQuestPreparationHandler.PrepareAsync()
+    async Task IQuestPreparationHandler.PrepareAsync()
     {
-        container.Clear();
-        return config.ConfigureAsync(container);
+        await container.ClearAsync();
+        await config.ConfigureAsync(container);
     }
 }

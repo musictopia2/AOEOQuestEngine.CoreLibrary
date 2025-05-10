@@ -1,13 +1,16 @@
-﻿
-namespace AOEOQuestEngine.CoreLibrary.Shared.Containers;
+﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Containers;
 public class QuestDataContainer(ICivilizationContext civContext) : IConfigurableQuestData
 {
     public TechMatrixService TechData { get; private set; } = new();
     private readonly TechIDManager _techIdManager = new();
+    private TechNameService _techNameService = new();
+    private readonly LocalizedStringManager _tables = new();
     // Quest-specific settings
     private int _delayedAttackTime;
     private bool _seeAllMap;
     private EnumQuestNotificationMode _questNotificationMode;
+    public string GetNextName(string key) => _techNameService.GetNext(key);
+    public string InsertLocalizedString(string value) => _tables.InsertLocalizedString(value);
     int IConfigurableQuestData.DelayedAttackTime
     {
         get => _delayedAttackTime;
@@ -36,10 +39,12 @@ public class QuestDataContainer(ICivilizationContext civContext) : IConfigurable
     }
 
     // Reset quest-related settings
-    public void Clear()
+    internal async Task ClearAsync()
     {
         TechData = new();
+        _techNameService = new(); //just create a new one here.
         _techIdManager.Clear(); //i think.
+        await _tables.ResetAsync();
         _delayedAttackTime = 0;
         _seeAllMap= false;
     }

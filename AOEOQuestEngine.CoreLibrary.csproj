@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="CommonBasicLibraries" Version="9.0.32" />
     <PackageReference Include="QuestTesterLibrary" Version="9.0.3" />
-    <PackageReference Include="AOEOTechEditorLibrary" Version="9.0.18" />
+    <PackageReference Include="AOEOTechEditorLibrary" Version="9.0.19" />
     <PackageReference Include="BasicBlazorLibrary" Version="9.0.27" />
   </ItemGroup>
   <ItemGroup>
