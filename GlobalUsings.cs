@@ -34,3 +34,4 @@ global using oo1 = AOEOTechEditorLibrary.Prereqs.TechConditionOperators;
 global using CommonBasicLibraries.BasicUIProcesses;
 global using AOEOTechEditorLibrary.Shared;
 global using AOEOTechEditorLibrary.Services;
+global using CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.Misc;

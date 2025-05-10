@@ -1,5 +1,5 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Containers;
-public class QuestDataContainer(ICivilizationContext civContext) : IConfigurableQuestData
+public class QuestDataContainer(ICivilizationContext civContext) : IConfigurableQuestData, ILocalizedStringService
 {
     public TechMatrixService TechData { get; private set; } = new();
     private readonly TechIDManager _techIdManager = new();
