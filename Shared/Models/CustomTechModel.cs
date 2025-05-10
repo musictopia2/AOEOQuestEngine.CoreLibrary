@@ -21,6 +21,39 @@ public class CustomTechModel
     public BasicList<CustomUnitModel> Units { get; set; } = [];
     public int VillagersToSpawn { get; set; }
     public bool IsOnDemand => ResearchPoints != "0.000" || Costs.Count != 0;
+    public void NormalizeConsumableTechState(int useIndex = 0, int totalUses = 1)
+    {
+        string display = "";
+        string details = "";
+
+        if (Units.Count == 1)
+        {
+            var unit = Units.Single();
+            display = $"{unit.ProtoName} Consumable (Use {useIndex + 1}/{totalUses})";
+            details = $"Spawns {unit.HowMany} {unit.ProtoName}(s) — Use {useIndex + 1} of {totalUses}";
+        }
+        else if (Units.Count > 1)
+        {
+            display = $"Multi-Unit Consumable (Use {useIndex + 1}/{totalUses})";
+            details = $"Spawns multiple units — Use {useIndex + 1} of {totalUses}";
+        }
+        else if (VillagersToSpawn > 0)
+        {
+            display = $"Villager Consumable (Use {useIndex + 1}/{totalUses})";
+            details = $"Spawns {VillagersToSpawn} Villager(s) — Use {useIndex + 1} of {totalUses}";
+        }
+
+        if (!string.IsNullOrEmpty(display))
+        {
+            DisplayName = display;
+        }
+        if (!string.IsNullOrEmpty(details))
+        {
+            Details = details;
+        }
+        RecipientType = EnumRecipentType.Human; //i think must be human
+    }
+
     public void NormalizeTechState()
     {
         // Handle DisplayName and Details normalization based on Units or VillagersToSpawn
