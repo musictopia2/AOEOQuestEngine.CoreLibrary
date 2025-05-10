@@ -96,19 +96,18 @@ public class DefaultUnitProcessor(QuestDataContainer container,
         PopulateTrainableUnits(entire);
         ProcessTownCenter(entire);
 
-
+        HashSet<string> units = [];
         foreach (var item in container.TechData.AllTechs)
         {
-            HashSet<string> units = [];
             foreach (var temp in item.Units)
             {
                 units.Add(temp.ProtoName);
-            }
-            foreach (var temp in units)
-            {
-                IUnitHandler? unit = consumableRegister.GetHandlerFor(temp);
-                unit?.ProcessCustomUnit(entire); //i broke it now.
-            }
+            }   
+        }
+        foreach (var temp in units)
+        {
+            IUnitHandler? unit = consumableRegister.GetHandlerFor(temp);
+            unit?.ProcessCustomUnit(entire); //i broke it now.
         }
         if (container.TechData.AllTechs.Any(x => x.VillagersToSpawn > 0) == false)
         {
