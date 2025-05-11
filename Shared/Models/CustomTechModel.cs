@@ -21,6 +21,22 @@ public class CustomTechModel
     public BasicList<CustomUnitModel> Units { get; set; } = [];
     public int VillagersToSpawn { get; set; }
     public bool IsOnDemand => ResearchPoints != "0.000" || Costs.Count != 0;
+    public void NormalizeConsumableTechState(string name, string description, int useIndex, int totalUses)
+    {
+        string display = "";
+        string details = "";
+        display = $"{name} Consumable (Use {useIndex}/{totalUses})";
+        details = $"{description} — Use {useIndex} of {totalUses}";
+        if (!string.IsNullOrEmpty(display))
+        {
+            DisplayName = display;
+        }
+        if (!string.IsNullOrEmpty(details))
+        {
+            Details = details;
+        }
+        RecipientType = EnumRecipentType.Human; //i think must be human
+    }
     public void NormalizeConsumableTechState(int useIndex, int totalUses)
     {
         string display = "";
@@ -42,7 +58,7 @@ public class CustomTechModel
             display = $"Villager Consumable (Use {useIndex}/{totalUses})";
             details = $"Spawns {VillagersToSpawn} Villager(s) — Use {useIndex} of {totalUses}";
         }
-
+        
         if (!string.IsNullOrEmpty(display))
         {
             DisplayName = display;
