@@ -21,15 +21,32 @@ public class CustomTechModel
     public BasicList<CustomUnitModel> Units { get; set; } = [];
     public int VillagersToSpawn { get; set; }
     public bool IsOnDemand => ResearchPoints != "0.000" || Costs.Count != 0;
-    public void NormalizeConsumableTechState(string name, string description, int useIndex, int totalUses)
+    public void NormalizeConsumableTechState(
+        string name,
+        string description,
+        int useIndex,
+        int totalUses,
+        int? activeDurationSeconds = null,
+        int? cooldownSeconds = null)
     {
-        string display = "";
-        string details = "";
-        display = $"{name} Consumable (Use {useIndex}/{totalUses})";
-        details = $"{description} — Use {useIndex} of {totalUses}";
-        DisplayName = name ;
-        Details = display;
-        RecipientType = EnumRecipentType.Human; //i think must be human
+        // Display line for UI
+        DisplayName = $"{name} Consumable (Use {useIndex}/{totalUses})";
+
+        // Build description line
+        string details = $"{description} — Use {useIndex} of {totalUses}";
+
+        if (activeDurationSeconds.HasValue)
+        {
+            details += $"\nActive for {activeDurationSeconds.Value} seconds.";
+        }
+
+        if (cooldownSeconds.HasValue)
+        {
+            details += $"\nCooldown: {cooldownSeconds.Value} seconds.";
+        }
+
+        Details = details;
+        RecipientType = EnumRecipentType.Human;
     }
     public void NormalizeConsumableTechState(int useIndex, int totalUses)
     {
@@ -118,7 +135,7 @@ public class CustomTechModel
     public void Validate()
     {
         // Ensure there's at least one effect, unit, or villagers
-        if (Effects.Count == 0 && VillagersToSpawn == 0 && Units.Count== 0)
+        if (Effects.Count == 0 && VillagersToSpawn == 0 && Units.Count == 0)
         {
             throw new CustomBasicException("There is no real tech here");
         }
@@ -138,7 +155,7 @@ public class CustomTechModel
             return;  // If it's a computer tech, no need for further checks
         }
         // Villagers and units can't coexist in the same tech
-        if (VillagersToSpawn > 0 &&  Units.Count > 0)
+        if (VillagersToSpawn > 0 && Units.Count > 0)
         {
             throw new CustomBasicException("Must have different techs for villagers vs units");
         }
