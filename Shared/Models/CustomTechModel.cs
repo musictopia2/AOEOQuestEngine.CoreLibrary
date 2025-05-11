@@ -48,7 +48,7 @@ public class CustomTechModel
         Details = details;
         RecipientType = EnumRecipentType.Human;
     }
-    public void NormalizeConsumableTechState(int useIndex, int totalUses)
+    public void NormalizeConsumableTechState(string name, int useIndex, int totalUses)
     {
         string display = "";
         string details = "";
@@ -56,18 +56,22 @@ public class CustomTechModel
         if (Units.Count == 1)
         {
             var unit = Units.Single();
-            display = $"{unit.ProtoName} Consumable (Use {useIndex}/{totalUses})";
+            display = $"{name} Consumable (Use {useIndex}/{totalUses})";
             details = $"Spawns {unit.HowMany} {unit.ProtoName}(s) — Use {useIndex} of {totalUses}";
         }
         else if (Units.Count > 1)
         {
-            display = $"Multi-Unit Consumable (Use {useIndex}/{totalUses})";
+            display = $"Multi-Unit {name} Consumable (Use {useIndex}/{totalUses})";
             details = $"Spawns multiple units — Use {useIndex} of {totalUses}";
         }
         else if (VillagersToSpawn > 0)
         {
             display = $"Villager Consumable (Use {useIndex}/{totalUses})";
             details = $"Spawns {VillagersToSpawn} Villager(s) — Use {useIndex} of {totalUses}";
+        }
+        else
+        {
+            throw new CustomBasicException("Needs to use one with descriptions if no units or villagesr");
         }
         if (string.IsNullOrWhiteSpace(DisplayName) == false && string.IsNullOrWhiteSpace(Details) == false)
         {
