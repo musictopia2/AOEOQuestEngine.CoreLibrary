@@ -27,14 +27,8 @@ public class CustomTechModel
         string details = "";
         display = $"{name} Consumable (Use {useIndex}/{totalUses})";
         details = $"{description} — Use {useIndex} of {totalUses}";
-        if (!string.IsNullOrEmpty(display))
-        {
-            DisplayName = display;
-        }
-        if (!string.IsNullOrEmpty(details))
-        {
-            Details = details;
-        }
+        DisplayName = name ;
+        Details = display;
         RecipientType = EnumRecipentType.Human; //i think must be human
     }
     public void NormalizeConsumableTechState(int useIndex, int totalUses)
@@ -58,7 +52,11 @@ public class CustomTechModel
             display = $"Villager Consumable (Use {useIndex}/{totalUses})";
             details = $"Spawns {VillagersToSpawn} Villager(s) — Use {useIndex} of {totalUses}";
         }
-        
+        if (string.IsNullOrWhiteSpace(DisplayName) == false && string.IsNullOrWhiteSpace(Details) == false)
+        {
+            NormalizeConsumableTechState(DisplayName, Details, useIndex, totalUses);
+            return;
+        }
         if (!string.IsNullOrEmpty(display))
         {
             DisplayName = display;
