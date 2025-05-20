@@ -4,6 +4,7 @@ public class DefaultTacticsClass(QuestDataContainer container) : ITacticsAutomat
     XElement ITacticsAutomation.GetAutomatedTactics(XElement source)
     {
         UnitCounter counter = new();
+
         foreach (var tech in container.TechData.AllTechs)
         {
             foreach (var unit in tech.Units)
@@ -17,9 +18,32 @@ public class DefaultTacticsClass(QuestDataContainer container) : ITacticsAutomat
                 AddItem(source, villager, counter.GetNextUnitId);
             }
         }
-        XElement tactic = source.Element("tactic")!;
-        string text;
+
+        foreach (var consumable in container.Consumables)
+        {
+            if (consumable.Units.Count > 0)
+            {
+                consumable.MaxUses.Times(x =>
+                {
+                    foreach (var unit in consumable.Units)
+                    {
+                        AddItem(source, unit, counter.GetNextUnitId);
+                    }
+                });
+            }
+            if (consumable.VillagersToSpawn > 0)
+            {
+                consumable.MaxUses.Times(x =>
+                {
+                    CustomUnitModel villager = new(CustomVillagerClass.SupportedProtoName, consumable.VillagersToSpawn);
+                    AddItem(source, villager, counter.GetNextUnitId);
+                });
+            }
+
+        }
         counter.Reset();
+        string text;
+        XElement tactic = source.Element("tactic")!;
         foreach (var tech in container.TechData.AllTechs)
         {
             foreach (var unit in tech.Units)
@@ -35,6 +59,37 @@ public class DefaultTacticsClass(QuestDataContainer container) : ITacticsAutomat
                 <action>Spawn_{CustomVillagerClass.SupportedProtoName}{counter.GetNextUnitId}</action>
                 """;
                 tactic.Add(XElement.Parse(text));
+            }
+        }
+        if (container.Consumables.Count == 0)
+        {
+            return source;
+        }
+        foreach (var consumable in container.Consumables)
+        {
+
+            if (consumable.Units.Count > 0)
+            {
+                consumable.MaxUses.Times(x =>
+                {
+                    foreach (var unit in consumable.Units)
+                    {
+                        text = $"""
+                        <action>Spawn_{unit.ProtoName}{counter.GetNextUnitId}</action>
+                        """;
+                        tactic.Add(XElement.Parse(text));
+                    }
+                });
+            }
+            if (consumable.VillagersToSpawn > 0)
+            {
+                consumable.MaxUses.Times(x =>
+                {
+                    text = $"""
+                    <action>Spawn_{CustomVillagerClass.SupportedProtoName}{counter.GetNextUnitId}</action>
+                    """;
+                    tactic.Add(XElement.Parse(text));
+                });
             }
         }
         return source;

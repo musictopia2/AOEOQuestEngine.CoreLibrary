@@ -43,7 +43,28 @@ public class DefaultQuestExtensionApplier(QuestDataContainer container) : IQuest
         string finalText = cats.GetInfo();
         source.AddMapStringVariable("TrainUnits", finalText);
 
+
+        BasicList<int> consumableIds = [];
+        BasicList<int> others = [];
+        foreach (var consumable in container.Consumables)
+        {
+            consumable.MaxUses.Times(x =>
+            {
+                int id = container.GetNextTechID;
+                if (x == 1)
+                {
+                    consumableIds.Add(id);
+                }
+            });
+        }
+        container.Consumables.ForConditionalItems(x => x.HasExtraTechs(), _ =>
+        {
+            others.Add(container.GetNextTechID);
+        });
+        value = GetActivatedEffects(consumableIds, others, container.Consumables);
+        source.AddMapStringVariable("Consumables", value);
     }
+
     private static string GetActivatedEffects(BasicList<int> ids, BasicList<CustomTechModel> techs)
     {
         if (ids.Count != techs.Count)
@@ -82,6 +103,54 @@ public class DefaultQuestExtensionApplier(QuestDataContainer container) : IQuest
             {
                 innerParts.Add("CustomUnit:False");
             }
+            parts.Add(string.Join(",", innerParts));
+        }
+        return string.Join(";", parts);
+    }
+
+    private static string GetActivatedEffects(BasicList<int> ids, BasicList<int> others, BasicList<SimpleUnitConsumableModel> consumables)
+    {
+        if (ids.Count != consumables.Count)
+        {
+            throw new CustomBasicException("The id and consumable counts don't match");
+        }
+        int c = 0;
+        var parts = new List<string>();
+        for (int i = 0; i < ids.Count; i++)
+        {
+            int techId = ids[i];
+            var consumable = consumables[i];
+            string customUnit;
+            if (consumable.Units.Count > 0 || consumable.VillagersToSpawn > 0)
+            {
+                customUnit = "True";
+            }
+            else
+            {
+                customUnit = "False";
+            }
+            int other;
+            if (consumable.HasExtraTechs())
+            {
+                other = others[c];
+                c++;
+            }
+            else
+            {
+                other = 0;
+            }
+            var innerParts = new List<string>
+            {
+                $"TechID:{techId}",
+                $"DisplayName:{consumable.DisplayName}",
+                $"Cooldown:{consumable.Cooldown}",
+                $"MaximumUses:{consumable.MaxUses}",
+                $"ActiveTime:{consumable.ActiveTime}",
+                $"CustomUnit:{customUnit}",
+                $"Other:{other}",
+                $"Computer:{consumable.ForComputer}"
+            };
+
             parts.Add(string.Join(",", innerParts));
         }
         return string.Join(";", parts);

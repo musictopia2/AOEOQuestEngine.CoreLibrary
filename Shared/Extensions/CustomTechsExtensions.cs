@@ -2,6 +2,26 @@
 public static class CustomTechsExtensions
 {
     //so somebody can just have global forever with self heal if necessary.
+    internal static bool HasExtraTechs(this SimpleUnitConsumableModel consumable)
+    {
+        if (consumable.ForComputer)
+        {
+            return true;
+        }
+        if (consumable.ActiveTime == 0)
+        {
+            return false;
+        }
+        if (consumable.VillagersToSpawn > 0)
+        {
+            return true; //try to force extra tech for villagers now. even though its only a filler.
+        }
+        if (consumable.Units.Count > 0)
+        {
+            return true;
+        }
+        return false;
+    }
     public static IConfigurableQuestData StartGlobalForeverActivationWithSelfHeal(this IConfigurableQuestData config)
     {
         config.TechData.StartGlobalForeverActivation();

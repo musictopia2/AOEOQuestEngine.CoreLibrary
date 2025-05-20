@@ -20,7 +20,15 @@ public class DefaultUnitProcessor(QuestDataContainer container,
         }
         return cats.GetInfo();
     }
-    // Helper method to get available columns for units
+    XElement IUnitProcessor.GetUnitXML()
+    {
+        XElement entire = XElement.Load(dd1.RawUnitLocation);
+        PopulateTrainableUnits(entire);
+        PopulateUnits(entire);
+        //this has no fortress.
+        ProcessTownCenter(entire);
+        return entire;
+    }
     private static BasicList<int> GetAvailableUnitColumns(bool fromTownCenter)
     {
         // Logic for determining available columns for units (same as before)
@@ -73,7 +81,6 @@ public class DefaultUnitProcessor(QuestDataContainer container,
             originalUnit.Add(newTech);
         }
     }
-
     private void PopulateTrainableUnits(XElement entire)
     {
         if (container.TrainableUnits.Count == 0)
@@ -87,62 +94,108 @@ public class DefaultUnitProcessor(QuestDataContainer container,
             reals.Populate(entire, item, container);
         }
     }
-
-
-    XElement IUnitProcessor.GetUnitXML()
+    private void ProcessTownCenter(XElement entire)
     {
-        XElement entire = XElement.Load(dd1.RawUnitLocation);
+        string name;
+        name = $"{container.CivAbb}_Bldg_TownCenter";
+        var availableConsumables = GetAvailableUnitColumns(true).GetEnumerator();
+        XElement originalUnit = entire.Elements().Single(x => x.Attribute("name")!.Value == name);
+        var availableTechs = GetAvailableTechColumns(originalUnit).GetEnumerator();
+        int column = 0;
+        int row = 0;
+        container.TechData.AllTechs.ForConditionalItems(x => x.IsOnDemand, tech =>
+        {
+            if (tech.Units.Count > 0 || tech.VillagersToSpawn > 0)
+            {
+                //this if for units
+                if (!availableConsumables.MoveNext())
+                {
+                    throw new InvalidOperationException("Too many consumables; no available placement slots.");
+                }
+                row = 0;
+                column = availableConsumables.Current;
+            }
+            else
+            {
+                row = 1;
+                if (!availableTechs.MoveNext())
+                {
+                    throw new InvalidOperationException("Too many techs; no available placement slots.");
+                }
+                column = availableTechs.Current;
+            }
 
-        PopulateTrainableUnits(entire);
-        ProcessTownCenter(entire);
+            XElement newTech = new("Tech",
+                new XAttribute("row", row),
+                new XAttribute("page", "0"),
+                new XAttribute("column", column),
+                tech.Name);
+            originalUnit.Add(newTech);
+        });
 
+        foreach (var consumable in container.Consumables)
+        {
+            name = $"{container.CivAbb}_Bldg_TownCenter";
+            originalUnit = entire.Elements().Single(x => x.Attribute("name")!.Value == name);
+            //Pe_Bldg_TownCenter
+            if (consumable.Units.Count > 0 || consumable.VillagersToSpawn > 0)
+            {
+                //this if for units
+                if (!availableConsumables.MoveNext())
+                {
+                    throw new InvalidOperationException("Too many consumables; no available placement slots.");
+                }
+                row = 0;
+                column = availableConsumables.Current;
+            }
+            else
+            {
+                row = 1;
+                if (!availableTechs.MoveNext())
+                {
+                    throw new InvalidOperationException("Too many techs; no available placement slots.");
+                }
+                column = availableTechs.Current;
+            }
+            consumable.GeneratedTechs.ForEach(tech =>
+            {
+                XElement newTech = new("Tech",
+                    new XAttribute("row", row),
+                    new XAttribute("page", "0"),
+                    new XAttribute("column", column),
+                    tech.Name);
+                originalUnit.Add(newTech);
+            });
+        }
+    }
+    private void PopulateUnits(XElement entire)
+    {
         HashSet<string> units = [];
+
         foreach (var item in container.TechData.AllTechs)
         {
             foreach (var temp in item.Units)
             {
                 units.Add(temp.ProtoName);
-            }   
+            }
+        }
+
+        foreach (var item in container.Consumables)
+        {
+            foreach (var temp in item.Units)
+            {
+                units.Add(temp.ProtoName);
+            }
         }
         foreach (var temp in units)
         {
             IUnitHandler? unit = consumableRegister.GetHandlerFor(temp);
             unit?.ProcessCustomUnit(entire); //i broke it now.
         }
-        if (container.TechData.AllTechs.Any(x => x.VillagersToSpawn > 0) == false)
+        if (container.TechData.AllTechs.Any(x => x.VillagersToSpawn > 0) || container.Consumables.Any(x => x.VillagersToSpawn > 0))
         {
-            return entire;
+            IUnitHandler villager = new CustomVillagerClass(container);
+            villager.ProcessCustomUnit(entire); //i broke it now.
         }
-        //now villager.
-        IUnitHandler villager = new CustomVillagerClass(container);
-        villager.ProcessCustomUnit(entire);
-        return entire;
-    }
-
-
-    private void ProcessTownCenter(XElement entire)
-    {
-        string name;
-        name = $"{container.CivAbb}_Bldg_TownCenter";
-        XElement originalUnit = entire.Elements().Single(x => x.Attribute("name")!.Value == name);
-        //this is the unit part.
-        //hopefully just those 2 parts needed (?)
-        //Pe_Bldg_TownCenter
-        var availableTechs = GetAvailableTechColumns(originalUnit).GetEnumerator();
-        var availableConsumables = GetAvailableUnitColumns(true).GetEnumerator();
-        container.TechData.AllTechs.ForConditionalItems(x => x.IsOnDemand, tech =>
-        {
-            if (!availableConsumables.MoveNext())
-            {
-                throw new InvalidOperationException("Too many consumables; no available placement slots.");
-            }
-            int column = availableConsumables.Current;
-            XElement newTech = new("Tech",
-                new XAttribute("row", 0),
-                new XAttribute("page", "0"),
-                new XAttribute("column", column),
-                tech.Name);
-            originalUnit.Add(newTech);
-        });
     }
 }

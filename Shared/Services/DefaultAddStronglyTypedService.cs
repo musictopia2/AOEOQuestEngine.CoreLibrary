@@ -50,6 +50,61 @@ public class DefaultAddStronglyTypedService(QuestDataContainer container) : Base
             }
             AdditionalTechs.Add(current);
         }
+        foreach (var consumable in container.Consumables)
+        {
+            foreach (var item in consumable.GeneratedTechs)
+            {
+                current = TechTreeServices.CreateNewTechModel(item.Name);
+                current.DisplayNameID = container.InsertLocalizedString(item.DisplayName);
+                current.RolloverTextID = container.InsertLocalizedString(item.Details);
+                current.ResearchPoints = item.ResearchPoints;
+                current.Icon = @"Celeste\UserInterface\Icons\Techs\C08TechMahoutMastery_ua";
+                if (item.Units.Count > 0)
+                {
+                    AddUnit(current, item, container.CivAbb, counter);
+                }
+                else if (item.VillagersToSpawn > 0)
+                {
+                    AddVillager(current, item, container.CivAbb, counter);
+                }
+                else
+                {
+                    current.Effects = item.Effects;
+                    current.Prereqs = item.Prereqs;
+                }
+                AdditionalTechs.Add(current);
+            }
+        }
+        container.Consumables.ForConditionalItems(x => x.HasExtraTechs(), item =>
+        {
+            BasicEffectModel effect;
+            current = TechTreeServices.CreateNewTechModel();
+            if (item.ForComputer)
+            {
+                current.Effects = item.Effects;
+            }
+            else if (item.Units.Count > 0)
+            {
+                //this is for unit effects.
+                //because this is for consumable, then this will disappear but can come back.
+                foreach (var unit in item.Units)
+                {
+                    //effect = EffectsServices.GetHitPoints(unit.ProtoName, "0.000000000000010000");
+                    effect = EffectsServices.GetTerminateUnit(unit.ProtoName);
+                    current.Effects.Add(effect);
+                }
+            }
+            else if (item.VillagersToSpawn > 0)
+            {
+                effect = EffectsServices.GetTerminateUnit(CustomVillagerClass.SupportedProtoName);
+                current.Effects.Add(effect);
+            }
+            else
+            {
+                throw new CustomBasicException("No extra tech needed");
+            }
+            AdditionalTechs.Add(current);
+        });
     }
     private static void AddVillager(BasicTechModel current,
         CustomTechModel activate,

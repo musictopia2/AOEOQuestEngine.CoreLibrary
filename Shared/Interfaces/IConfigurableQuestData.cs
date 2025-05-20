@@ -3,6 +3,7 @@ public interface IConfigurableQuestData
 {
     TechMatrixService TechData { get; }
     BasicList<TrainableUnitModel> TrainableUnits { get; set; }
+    BasicList<SimpleUnitConsumableModel> Consumables { get; set; }
     string GetNextName(string key);
     //needs to do through here now.
     int DelayedAttackTime { get; set; }
