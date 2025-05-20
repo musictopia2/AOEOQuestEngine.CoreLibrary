@@ -14,5 +14,6 @@ public class DefaultQuestPreparationHandler(QuestDataContainer container, IQuest
         {
             unit.Validate();
         });
+        container.ProcessConsumables();
     }
 }
