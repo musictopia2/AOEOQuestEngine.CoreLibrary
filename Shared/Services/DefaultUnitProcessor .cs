@@ -135,7 +135,6 @@ public class DefaultUnitProcessor(QuestDataContainer container,
 
         foreach (var consumable in container.Consumables)
         {
-            name = $"{container.CivAbb}_Bldg_TownCenter";
             originalUnit = entire.Elements().Single(x => x.Attribute("name")!.Value == name);
             //Pe_Bldg_TownCenter
             if (consumable.Units.Count > 0 || consumable.VillagersToSpawn > 0)
