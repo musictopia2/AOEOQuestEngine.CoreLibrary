@@ -1,10 +1,9 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Services;
 public class DefaultTacticsClass(QuestDataContainer container) : ITacticsAutomation
 {
-    XElement ITacticsAutomation.GetAutomatedTactics(XElement source)
+    XElement ITacticsAutomation.GetAutomatedTactics(XElement source, bool fromDock)
     {
         UnitCounter counter = new();
-
         foreach (var tech in container.TechData.AllTechs)
         {
             foreach (var unit in tech.Units)
@@ -18,7 +17,6 @@ public class DefaultTacticsClass(QuestDataContainer container) : ITacticsAutomat
                 AddItem(source, villager, counter.GetNextUnitId);
             }
         }
-
         foreach (var consumable in container.Consumables)
         {
             if (consumable.Units.Count > 0)

@@ -4,7 +4,7 @@ public class BasicTacticsBusinessService(ITacticsAutomation automation) : ITacti
     void ITacticsBusinessService.DoAllTactics()
     {
         XElement source = XElement.Load(dd1.RawTacticsTownCenterLocation);
-        source = automation.GetAutomatedTactics(source);
+        source = automation.GetAutomatedTactics(source, false);
         source.Save(dd1.NewTacticsTownCenterLocation);
     }
 }
