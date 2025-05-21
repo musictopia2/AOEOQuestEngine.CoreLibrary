@@ -45,6 +45,7 @@ public class QuestDataContainer(ICivilizationContext civContext) : IConfigurable
     public async Task ClearAsync()
     {
         TechData = new();
+        Consumables.Clear();
         _techNameService = new(); //just create a new one here.
         _techIdManager.Clear(); //i think.
         await _tables.ResetAsync();
