@@ -4,6 +4,7 @@ public static class ServiceExtensions
     public static IServiceCollection RegisterChampionModeProcessingServices(this IServiceCollection services, Action<IServiceCollection> additionalActions)
     {
         services.AddSingleton<IProcessQuestService, ChampionProcessQuestService>()
+            .AddSingleton<IQuestOutcomeRecoveryService, NoOpQuestOutcomeRecoveryService>()
             .AddSingleton<ChampionSharedQuestProcessor>()
             .RegisterCoreOfflineServices()
             .RegisterCoreQuestQuestProcessorServices()
