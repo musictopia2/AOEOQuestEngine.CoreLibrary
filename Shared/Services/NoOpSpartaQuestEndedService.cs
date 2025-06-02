@@ -1,8 +1,8 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Services;
-public class NoOpSpartaQuestEndedService : ISpartaQuestEnded
+public class NoOpSpartaQuestEndedService(IQuestResultPersistenceService persist) : ISpartaQuestEnded
 {
-    Task ISpartaQuestEnded.EndQuestAsync(EnumSpartaQuestResult result, string time)
+    async Task ISpartaQuestEnded.EndQuestAsync(EnumSpartaQuestResult result, string time)
     {
-        return Task.CompletedTask;
+        await persist.ClearPendingAsync();
     }
 }

@@ -6,6 +6,7 @@ public static class ServiceExtensions
         services.AddSingleton<IProcessQuestService, ChampionProcessQuestService>()
             .AddSingleton<IQuestOutcomeRecoveryService, DefaultQuestOutcomeRecoveryService>()
             .AddSingleton<ChampionSharedQuestProcessor>()
+            .AddSingleton<IQuestResultPersistenceService, JsonQuestResultPersistenceService>()
             .RegisterCoreOfflineServices()
             .RegisterCoreQuestQuestProcessorServices()
             .RegisterStandardQuestServices()
@@ -22,6 +23,7 @@ public static class ServiceExtensions
                     .AddSingleton<ChampionSharedQuestProcessor>();
             services.AddSingleton<IPlayQuestViewModel, ChampionTestSingleQuestViewModel>();
             services.RegisterCoreOfflineServices()
+            .AddSingleton<IQuestResultPersistenceService, NoOpQuestResultPersistanceService>()
             .RegisterStandardQuestServices()
             .RegisterNoLaunchSpartanServices(); //if they do this, no launcher for sparta.
             additionalActions.Invoke(services);

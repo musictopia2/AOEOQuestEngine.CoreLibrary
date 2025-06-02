@@ -35,3 +35,4 @@ global using CommonBasicLibraries.BasicUIProcesses;
 global using AOEOTechEditorLibrary.Shared;
 global using AOEOTechEditorLibrary.Services;
 global using CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.Misc;
+global using js1 = CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.JsonSerializers.FileHelpers;
