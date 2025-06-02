@@ -2,9 +2,10 @@
 public interface ISpartaQuestEnded
 {
     /// <summary>
-    /// This method is called when the quest is finished.
+    /// Called when the quest ends, either from live monitoring or recovery.
+    /// Handles success or failure outcomes and any required processing.
     /// </summary>
-    /// <param name="result">The result of the quest (success or failure).</param>
-    /// <param name="time">The time the quest took, in the format HH:mm:ss.</param>
-    void EndQuest(EnumSpartaQuestResult result, string time); //just return the string and whoever handles it can decide what to do from here.
+    /// <param name="result">Victory or failure result.</param>
+    /// <param name="time">Duration of the quest (HH:mm:ss).</param>
+    Task EndQuestAsync(EnumSpartaQuestResult result, string time);
 }
