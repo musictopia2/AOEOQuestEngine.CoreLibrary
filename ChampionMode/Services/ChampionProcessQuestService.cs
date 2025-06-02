@@ -1,11 +1,18 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.ChampionMode.Services;
 public class ChampionProcessQuestService(
     ChampionSharedQuestProcessor processor,
-    QuestFileContainer questFileContainer
+    QuestFileContainer questFileContainer,
+    IQuestOutcomeRecoveryService recovery
     ) : IProcessQuestService
 {
     async Task IProcessQuestService.ProcessQuestAsync()
     {
+        bool rets;
+        rets = await recovery.CanProceedWithQuestAsync();
+        if (rets == false)
+        {
+            return; //something else will happen.
+        }
         if (ll1.MainLocation == "")
         {
             throw new CustomBasicException("Must set up ahead of time now.  Since locations can change");
