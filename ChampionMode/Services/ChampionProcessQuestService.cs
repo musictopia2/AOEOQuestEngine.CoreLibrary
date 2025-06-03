@@ -2,6 +2,7 @@
 public class ChampionProcessQuestService(
     ChampionSharedQuestProcessor processor,
     QuestFileContainer questFileContainer,
+    QuestTitleContainer questTitleContainer,
     IQuestOutcomeRecoveryService recovery
     ) : IProcessQuestService
 {
@@ -25,6 +26,7 @@ public class ChampionProcessQuestService(
         {
             throw new CustomBasicException("Must set the quest file ahead of time");
         }
+        questTitleContainer.QuestTitle = questFileContainer.QuestTitle;
         await processor.ProcessQuestAsync(questFileContainer.QuestPath);
     }
 }

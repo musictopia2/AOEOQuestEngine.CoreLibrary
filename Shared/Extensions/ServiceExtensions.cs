@@ -26,6 +26,7 @@ public static class ServiceExtensions
         //anything else that could be needed but are advanced services.
         services.AddSingleton<ITechBusinessService, AdvancedTechBusinessService>()
             .AddSingleton<IRmsHandler, NoCopyRmsHandler>()
+            .AddSingleton<QuestTitleContainer>()
             //.AddSingleton<IQuestResultPersistenceService, NoOpQuestResultPersistanceService>()
             .AddSingleton<ISpartaQuestEnded, NoOpSpartaQuestEndedService>() //these 2 are now required  best to just now include here.  can override later anyways.
             .AddSingleton<IAddStronglyTypedTechsService, DefaultAddStronglyTypedService>()

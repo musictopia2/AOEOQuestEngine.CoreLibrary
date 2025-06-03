@@ -1,6 +1,7 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.ChampionMode.ViewModels;
 public class ChampionTestSingleQuestViewModel(IChooseCivViewModel civVM,
     IQuestLocatorService questService,
+    QuestTitleContainer questTitleContainer,
     ChampionSharedQuestProcessor processor
     ) : IPlayQuestViewModel
 {
@@ -17,6 +18,7 @@ public class ChampionTestSingleQuestViewModel(IChooseCivViewModel civVM,
         {
             throw new CustomBasicException("Must set the new game path ahead of time now");
         }
+        questTitleContainer.QuestTitle = questService.OldQuestTitle;
         await processor.ProcessQuestAsync(questService.OldQuestPath);
     }
     void IPlayQuestViewModel.ResetCiv()
