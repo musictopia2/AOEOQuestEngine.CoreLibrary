@@ -118,6 +118,7 @@ public class TechMatrixService
     {
         Validate(EnumCaller.Effects);
         _current!.Effects.AddRange(effects);
+        effects.Clear();
     }
     private void StartActivation(EnumRecipentType recipientType, EnumActivationType activationType, int time = 0, int startTime = 0, int endTime = 0)
     {
