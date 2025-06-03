@@ -154,6 +154,23 @@ public class CustomTechModel
         {
             throw new CustomBasicException("There is no real tech here");
         }
+
+        if (ActivationType == EnumActivationType.LimitedTime && Time < 1)
+        {
+            throw new CustomBasicException("LimitedTime activations must last at least 1 second.");
+        }
+
+        if (ActivationType == EnumActivationType.Delayed && Time < 1)
+        {
+            throw new CustomBasicException("Delayed activations must be delayed at least 1 second.");
+        }
+
+        if (ActivationType == EnumActivationType.Timespan && StartTime > EndTime)
+        {
+            throw new CustomBasicException("Start time cannot be later than end time for Timespan activations.");
+        }
+
+
         // Check the tech recipient type rules
         if (RecipientType == EnumRecipentType.Computer)
         {

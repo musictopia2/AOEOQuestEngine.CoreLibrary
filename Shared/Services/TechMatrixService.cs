@@ -10,6 +10,14 @@ public class TechMatrixService
     }
     public BasicList<CustomTechModel> AllTechs { get; private set; } = [];
     private CustomTechModel? _current;
+    public void ValidateCurrentTech()
+    {
+        if (_current == null)
+        {
+            throw new CustomBasicException("You never set a current item");
+        }
+        _current.Validate();
+    }
     public void AddVillagers(int villagersToSpawn)
     {
         // Ensure at least one villager is spawned
