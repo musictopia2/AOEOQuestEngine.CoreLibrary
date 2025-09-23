@@ -30,7 +30,7 @@ public static class ServiceExtensions
             //.AddSingleton<IQuestResultPersistenceService, NoOpQuestResultPersistanceService>()
             .AddSingleton<ISpartaQuestEnded, NoOpSpartaQuestEndedService>() //these 2 are now required  best to just now include here.  can override later anyways.
             .AddSingleton<IAddStronglyTypedTechsService, DefaultAddStronglyTypedService>()
-            .AddSingleton<IAddTechsToCharacterService, DefaultAddCharacterService>();
+            .AddSingleton<ICharacterFileModifierService, DefaultAddCharacterService>();
         services.AddSingleton<ITacticsBusinessService, BasicTacticsBusinessService>();
         services.AddSingleton<ITacticsAutomation, DefaultTacticsClass>();
         services.AddSingleton<IUnitProcessor, DefaultUnitProcessor>();

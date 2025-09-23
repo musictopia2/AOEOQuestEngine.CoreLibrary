@@ -57,9 +57,5 @@ public static class ChampionModeExtensions
             script.Value = newValue;
         }
     }
-    private static void RemoveOptionalChallenges(this XElement source)
-    {
-        var list = source.Elements("secondaryobjectives");
-        list.Remove();
-    }
+    
 }

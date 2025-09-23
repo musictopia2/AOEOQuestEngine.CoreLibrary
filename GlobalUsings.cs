@@ -1,7 +1,7 @@
 ﻿global using CommonBasicLibraries.CollectionClasses;
 global using QuestTesterLibrary.Extensions;
 global using AOEOBasicDataLibrary.Services;
-global using QuestTesterLibrary.LocatorServices;
+global using QuestTesterLibrary.Services;
 global using dd1 = AOEOBasicDataLibrary.Helpers.BasicGameLocationHelpers;
 global using CommonBasicLibraries.BasicDataSettingsAndProcesses;
 global using System.Xml.Linq;
@@ -36,3 +36,5 @@ global using AOEOTechEditorLibrary.Shared;
 global using AOEOTechEditorLibrary.Services;
 global using CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.Misc;
 global using js1 = CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.JsonSerializers.FileHelpers;
+global using AOEOQuestEngine.CoreLibrary.StandardMode.Services;
+global using AOEOQuestEngine.CoreLibrary.StandardMode.Extensions;

@@ -1,7 +1,7 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Extensions;
 public static class CharacterExtensions
 {
-    public static IAddTechsToCharacterService AddCustomVillagers(this IAddTechsToCharacterService service, string civAbb)
+    public static ICharacterFileModifierService AddCustomVillagers(this ICharacterFileModifierService service, string civAbb)
     {
         XElement source = service.Source!; // The character file being modified
         string originalName = $"{civAbb}_Civ_Villager";

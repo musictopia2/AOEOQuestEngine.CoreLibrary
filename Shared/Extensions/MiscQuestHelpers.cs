@@ -11,4 +11,9 @@ public static class MiscQuestHelpers
         output = output.Trim(); //we don't care if its archive or not.
         return output;
     }
+    internal static void RemoveOptionalChallenges(this XElement source)
+    {
+        var list = source.Elements("secondaryobjectives");
+        list.Remove();
+    }
 }
