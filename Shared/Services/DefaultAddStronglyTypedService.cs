@@ -75,7 +75,7 @@ public class DefaultAddStronglyTypedService(QuestDataContainer container) : Base
                 AdditionalTechs.Add(current);
             }
         }
-        container.Consumables.ForConditionalItems(x => x.HasExtraTechs(), item =>
+        container.Consumables.ForConditionalItems(x => x.HasExtraTechs, item =>
         {
             BasicEffectModel effect;
             current = TechTreeServices.CreateNewTechModel();

@@ -57,7 +57,7 @@ public class DefaultQuestExtensionApplier(QuestDataContainer container) : IQuest
                 }
             });
         }
-        container.Consumables.ForConditionalItems(x => x.HasExtraTechs(), _ =>
+        container.Consumables.ForConditionalItems(x => x.HasExtraTechs, _ =>
         {
             others.Add(container.GetNextTechID);
         });
@@ -130,7 +130,7 @@ public class DefaultQuestExtensionApplier(QuestDataContainer container) : IQuest
                 customUnit = "False";
             }
             int other;
-            if (consumable.HasExtraTechs())
+            if (consumable.HasExtraTechs)
             {
                 other = others[c];
                 c++;

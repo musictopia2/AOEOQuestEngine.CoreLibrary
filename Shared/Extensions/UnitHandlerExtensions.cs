@@ -1,20 +1,20 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Extensions;
 public static class UnitHandlerExtensions
 {
-    public static void RegisterStandardUnit<T>(this T handler, XElement root)
-        where T : IUnitHandler
+    extension <T>(T handler)
+        where T: IUnitHandler
     {
-        var unitElement = root.Elements()
-           .SingleOrDefault(x => (string?)x.Attribute("name") == T.SupportedProtoName);
-        if (unitElement == null)
+        public void RegisterStandardUnit(XElement root)
         {
-            // Optional: log warning
-            return;
-        }
-        var trainPoints = unitElement.Element("TrainPoints");
-        if (trainPoints != null)
-        {
-            trainPoints.Value = "0.0000";
+            var unitElement = root.Elements()
+               .SingleOrDefault(x => (string?)x.Attribute("name") == T.SupportedProtoName);
+            if (unitElement == null)
+            {
+                // Optional: log warning
+                return;
+            }
+            var trainPoints = unitElement.Element("TrainPoints");
+            trainPoints?.Value = "0.0000";
         }
     }
 }
