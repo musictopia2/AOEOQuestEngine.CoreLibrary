@@ -3,6 +3,11 @@ public static class ServiceExtensions
 {
     extension (IServiceCollection services)
     {
+        public IServiceCollection RegisterOnlyChristmasServices()
+        {
+            services.AddSingleton<ISeasonRuleEvaluator, OnlyChristmasRule>();
+            return services;
+        }
         public IServiceCollection RegisterStandardQuestServices()
         {
             services.AddSingleton<QuestDataContainer>()
