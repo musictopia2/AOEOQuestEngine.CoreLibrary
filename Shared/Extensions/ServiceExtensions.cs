@@ -27,6 +27,7 @@ public static class ServiceExtensions
         {
             //anything else that could be needed but are advanced services.
             services.AddSingleton<ITechBusinessService, AdvancedTechBusinessService>()
+                .AddSingleton<ISeasonRuleEvaluator, DisallowChristmasSeasonRule>() //i like the default of not allowing during christmas season.  can always change it anyways.
                 .AddSingleton<IRmsHandler, NoCopyRmsHandler>()
                 .AddSingleton<QuestTitleContainer>()
                 .AddSingleton<ISpartaQuestEnded, NoOpSpartaQuestEndedService>() //these 2 are now required  best to just now include here.  can override later anyways.

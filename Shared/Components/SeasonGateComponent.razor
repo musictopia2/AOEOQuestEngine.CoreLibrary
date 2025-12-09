@@ -1,0 +1,15 @@
+﻿@if (_allowed == false)
+{
+    <div>
+        @_message
+    </div>
+    return;
+}
+@if (ChildContent is null)
+{
+    <div>
+        No Content
+    </div>
+    return;
+}
+@ChildContent

@@ -38,3 +38,4 @@ global using CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.Misc;
 global using js1 = CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.JsonSerializers.FileHelpers;
 global using AOEOQuestEngine.CoreLibrary.StandardMode.Services;
 global using AOEOQuestEngine.CoreLibrary.StandardMode.Extensions;
+global using CommonBasicLibraries.BasicDateTimeProcesses;
