@@ -36,7 +36,7 @@ public static class ChampionModeExtensions
             XElement legs = starts.Elements("variable").Single(x => x.Attribute("name")!.Value == "IsLEGENDARY");
             legs.Value = "false";
             XElement script = source.Element("randommap")!.Element("map")!;
-            string newValue = @"Celeste\Event\Winter\Winter_LoaderFix";
+            string newValue = @"Celeste\Event\Winter\Winter_Loader_NoBonusMultipliers";
             //trying with winterfix.  if that does not work. then refer to the older files of what i did.
             if (script.Value == @"Celeste\Event\Winter\Winter_Loader")
             {
