@@ -39,3 +39,4 @@ global using js1 = CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.Jso
 global using AOEOQuestEngine.CoreLibrary.StandardMode.Services;
 global using AOEOQuestEngine.CoreLibrary.StandardMode.Extensions;
 global using CommonBasicLibraries.BasicDateTimeProcesses;
+global using AOEOQuestEngine.CoreLibrary.StandardMode.ViewModels;

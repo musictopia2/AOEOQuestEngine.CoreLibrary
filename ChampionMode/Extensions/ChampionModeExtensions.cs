@@ -37,22 +37,26 @@ public static class ChampionModeExtensions
             legs.Value = "false";
             XElement script = source.Element("randommap")!.Element("map")!;
             string newValue = @"Celeste\Event\Winter\Winter_Loader_NoBonusMultipliers";
+
+            //risking leaving the original one for winter impossible cataclysm one.
+            //also risking leaving the values for the cyprus quests as well (?)
+
             //trying with winterfix.  if that does not work. then refer to the older files of what i did.
             if (script.Value == @"Celeste\Event\Winter\Winter_Loader")
             {
                 script.Value = newValue;
                 return;
             }
-            else if (script.Value == @"Celeste\Event\Winter\Winter_Cyprus_Loader")
-            {
-                script.Value = newValue;
-                return;
-            }
-            else if (script.Value == @"Celeste\Event\Winter\Winter_ImpossibleCataclysm")
-            {
-                script.Value = newValue;
-                return;
-            }
+            //else if (script.Value == @"Celeste\Event\Winter\Winter_Cyprus_Loader")
+            //{
+            //    script.Value = newValue;
+            //    return;
+            //}
+            //else if (script.Value == @"Celeste\Event\Winter\Winter_ImpossibleCataclysm")
+            //{
+            //    script.Value = newValue;
+            //    return;
+            //}
             if (source.HasMultipliers)
             {
                 newValue = @"Celeste\Celeste_LoaderFix";
