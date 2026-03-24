@@ -2,13 +2,14 @@
 public class CustomTechModel
 {
     public string Name { get; set; } = "";
+    public int ExistingTechId { get; set; } // 0 = allocate new one, otherwise use this one
     public string DisplayName { get; set; } = "";
     public string Details { get; set; } = "";
     // Quest timer window
     public int Time { get; set; }
     public int StartTime { get; set; }
     public int EndTime { get; set; }
-
+    public bool UsesExistingTech => ExistingTechId > 0;
     // Time to research: "0.000" = instant (auto), else on-demand
     public string ResearchPoints { get; set; } = "0.000";
 
@@ -150,7 +151,11 @@ public class CustomTechModel
     public void Validate()
     {
         // Ensure there's at least one effect, unit, or villagers
-        if (Effects.Count == 0 && VillagersToSpawn == 0 && Units.Count == 0)
+        if (UsesExistingTech)
+        {
+            return;  //its okay because its using existing techs.
+        }
+        if (Effects.Count == 0 && VillagersToSpawn == 0 && Units.Count == 0 && UsesExistingTech == false)
         {
             throw new CustomBasicException("There is no real tech here");
         }

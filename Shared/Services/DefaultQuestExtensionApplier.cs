@@ -10,7 +10,15 @@ public class DefaultQuestExtensionApplier(QuestDataContainer container) : IQuest
         BasicList<CustomTechModel> computerList = [];
         foreach (var tech in container.TechData.AllTechs)
         {
-            int id = container.GetNextTechID;
+            int id;
+            if (tech.UsesExistingTech == false)
+            {
+                id = container.GetNextTechID;
+            }
+            else
+            {
+                id = tech.ExistingTechId;
+            }
             if (tech.RecipientType == EnumRecipentType.Human || tech.RecipientType == EnumRecipentType.GlobalSharedRMS)
             {
                 humanIds.Add(id);

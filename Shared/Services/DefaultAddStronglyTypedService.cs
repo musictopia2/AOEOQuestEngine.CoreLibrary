@@ -7,6 +7,10 @@ public class DefaultAddStronglyTypedService(QuestDataContainer container) : Base
         UnitCounter counter = new();
         foreach (var item in container.TechData.AllTechs)
         {
+            if (item.UsesExistingTech)
+            {
+                continue;
+            }
             bool global = false;
             if (item.RecipientType == EnumRecipentType.GlobalObtainable)
             {

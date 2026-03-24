@@ -107,7 +107,13 @@ public class TechMatrixService
 
         _current.Units.Add(model);
     }
-
+    public void AddAdvisorTech(int id)
+    {
+        StartHumanForeverActivation();
+        _current!.ExistingTechId = id;
+        _current.ActivationType = EnumActivationType.Forever;
+    }
+    
     public void AddEffect(BasicEffectModel effect)
     {
         Validate(EnumCaller.Effects);

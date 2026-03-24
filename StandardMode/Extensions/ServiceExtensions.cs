@@ -19,5 +19,11 @@ public static class ServiceExtensions
             });
             return services;
         }
+        public IServiceCollection RegisterRemoveEliteFromStandard()
+        {
+            services.AddKeyedSingleton<IQuestExtensionApplier, DefaultQuestExtensionApplier>("Standard")
+                .AddSingleton<IQuestExtensionApplier, RemoveEliteQuestClass>();
+            return services;
+        }
     }
 }
