@@ -3,6 +3,11 @@ public static class ServiceExtensions
 {
     extension(IServiceCollection services)
     {
+        public IServiceCollection RegisterStandardModeProcessingServices(Action<IServiceCollection> additionalActions)
+        {
+
+            return services;
+        }
         public IServiceCollection RegisterStandardModeTestServices<L>(Action<IServiceCollection> additionalActions)
             where L : class, IQuestLocatorService
         {
