@@ -5,7 +5,12 @@ public static class ServiceExtensions
     {
         public IServiceCollection RegisterStandardModeProcessingServices(Action<IServiceCollection> additionalActions)
         {
-
+            services.RegisterCoreOfflineServices()
+                .AddSingleton<IQuestResultPersistenceService, NoOpQuestResultPersistanceService>()
+                .RegisterStandardQuestServices()
+                .RegisterCoreQuestQuestProcessorServices()
+                .RegisterNoLaunchSpartanServices(); //if they do this, no launcher for sparta.
+            additionalActions.Invoke(services);
             return services;
         }
         public IServiceCollection RegisterStandardModeTestServices<L>(Action<IServiceCollection> additionalActions)

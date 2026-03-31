@@ -11,6 +11,10 @@ public static class ServiceExtensions
         public IServiceCollection RegisterStandardQuestServices()
         {
             services.AddSingleton<QuestDataContainer>()
+                .AddSingleton<IProcessQuestService, StandardProcessQuestService>()
+                .AddSingleton<IQuestOutcomeRecoveryService, DefaultQuestOutcomeRecoveryService>()
+                .AddSingleton<StandardSharedQuestProcessor>()
+                .AddSingleton<IQuestResultPersistenceService, JsonQuestResultPersistenceService>()
                 .AddSingleton<IQuestPreparationHandler, DefaultQuestPreparationHandler>()
                 .AddSingleton<IQuestExtensionApplier, DefaultQuestExtensionApplier>()
                 .AddSingleton<IQuestConfigurator, NoOpQuestConfigurator>()
