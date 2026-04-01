@@ -41,7 +41,9 @@ public static class ServiceExtensions
                 .AddSingleton<QuestTitleContainer>()
                 .AddSingleton<ISpartaQuestEnded, NoOpSpartaQuestEndedService>() //these 2 are now required  best to just now include here.  can override later anyways.
                 .AddSingleton<IAddStronglyTypedTechsService, DefaultAddStronglyTypedService>()
-                .AddSingleton<ICharacterFileModifierService, DefaultAddCharacterService>();
+                .AddSingleton<ICharacterFileModifierService, DefaultAddCharacterService>()
+                .AddSingleton<IEffectRemovalFilter, NoEffectRemovalFilter>()
+                ;
             services.AddSingleton<ITacticsBusinessService, BasicTacticsBusinessService>();
             services.AddSingleton<ITacticsAutomation, DefaultTacticsClass>();
             services.AddSingleton<IUnitProcessor, DefaultUnitProcessor>();

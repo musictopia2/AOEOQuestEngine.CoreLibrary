@@ -8,10 +8,10 @@
     <FeedType>Public</FeedType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CommonBasicLibraries" Version="10.0.33" />
+    <PackageReference Include="CommonBasicLibraries" Version="10.0.34" />
     <PackageReference Include="QuestTesterLibrary" Version="10.0.12" />
-    <PackageReference Include="AOEOTechEditorLibrary" Version="10.0.12" />
-    <PackageReference Include="BasicBlazorLibrary" Version="10.0.179" />
+    <PackageReference Include="AOEOTechEditorLibrary" Version="10.0.25" />
+    <PackageReference Include="BasicBlazorLibrary" Version="10.0.180" />
   </ItemGroup>
   <ItemGroup>
     <SupportedPlatform Include="browser" />

@@ -1,5 +1,5 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Services;
-public class DefaultAddStronglyTypedService(QuestDataContainer container) : BaseAddStronglyTypedService
+public class DefaultAddStronglyTypedService(QuestDataContainer container, IEffectRemovalFilter filter) : BaseAddStronglyTypedService
 {
     public override void ApplyTechsToTree()
     {
@@ -40,6 +40,14 @@ public class DefaultAddStronglyTypedService(QuestDataContainer container) : Base
             }
             if (item.Units.Count == 0 && item.VillagersToSpawn == 0)
             {
+                var temps = item.Effects.ToBasicList();
+                foreach (var t in temps)
+                {
+                    if (filter.ShouldRemove(t))
+                    {
+                        item.Effects.RemoveSpecificItem(t);
+                    }
+                }
                 current.Effects = item.Effects;
                 current.Prereqs = item.Prereqs;
             }
