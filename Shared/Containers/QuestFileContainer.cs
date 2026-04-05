@@ -25,7 +25,12 @@ public class QuestFileContainer
             {
                 return "";
             }
-            string output = Path.Combine(dd1.NewQuestFileDirectory, $"{_questFile.Value.FileName}.quest");
+
+            string output = Path.Combine(dd1.NewQuestFileDirectory, $"{_questFile.Value.FileName}");
+            if (output.EndsWith(".quest") == false)
+            {
+                output = $"{output}.quest";
+            }
             return output;
         }
     }
