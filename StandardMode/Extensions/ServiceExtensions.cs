@@ -7,7 +7,7 @@ public static class ServiceExtensions
         {
             services.RegisterCoreOfflineServices()
                 .AddSingleton<IQuestResultPersistenceService, NoOpQuestResultPersistanceService>()
-                .RegisterStandardQuestServices()
+                .RegisterStandardQuestServices(false)
                 .RegisterCoreQuestQuestProcessorServices()
                 .RegisterNoLaunchSpartanServices(); //if they do this, no launcher for sparta.
             additionalActions.Invoke(services);
@@ -23,7 +23,7 @@ public static class ServiceExtensions
                 services.AddSingleton<IPlayQuestViewModel, StandardTestSingleQuestViewModel>();
                 services.RegisterCoreOfflineServices()
                 .AddSingleton<IQuestResultPersistenceService, NoOpQuestResultPersistanceService>()
-                .RegisterStandardQuestServices()
+                .RegisterStandardQuestServices(false)
                 .RegisterNoLaunchSpartanServices(); //if they do this, no launcher for sparta.
                 additionalActions.Invoke(services);
             });

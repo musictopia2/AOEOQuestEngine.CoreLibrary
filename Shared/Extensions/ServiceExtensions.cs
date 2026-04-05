@@ -1,4 +1,6 @@
-﻿namespace AOEOQuestEngine.CoreLibrary.Shared.Extensions;
+﻿using Microsoft.AspNetCore.Components.Web;
+
+namespace AOEOQuestEngine.CoreLibrary.Shared.Extensions;
 public static class ServiceExtensions
 {
     extension (IServiceCollection services)
@@ -8,8 +10,21 @@ public static class ServiceExtensions
             services.AddSingleton<ISeasonRuleEvaluator, OnlyChristmasRule>();
             return services;
         }
-        public IServiceCollection RegisterStandardQuestServices()
+        internal IServiceCollection RegisterStandardQuestServices(bool isChampion)
         {
+            if (isChampion)
+            {
+                services.AddSingleton<QuestDataContainer>()
+                .AddSingleton<IQuestPreparationHandler, DefaultQuestPreparationHandler>()
+                .AddSingleton<IQuestExtensionApplier, DefaultQuestExtensionApplier>()
+                .AddSingleton<IQuestConfigurator, NoOpQuestConfigurator>()
+                .AddSingleton<IUnitRegistry, NoUnitService>()
+                .AddSingleton<ITrainableUnitRegistry, NoTrainableUnitsService>()
+            ;
+                return services;
+            }
+
+
             services.AddSingleton<QuestDataContainer>()
                 .AddSingleton<IProcessQuestService, StandardProcessQuestService>()
                 .AddSingleton<IQuestOutcomeRecoveryService, DefaultQuestOutcomeRecoveryService>()
