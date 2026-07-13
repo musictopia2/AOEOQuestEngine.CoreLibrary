@@ -16,7 +16,8 @@ public static class MiscQuestHelpers
                 return output;
             }
         }
-        internal void RemoveOptionalChallenges()
+        //had to make this one public so can create a custom class to remove challenges but do other things.
+        public void RemoveOptionalChallenges()
         {
             var list = source.Elements("secondaryobjectives");
             list.Remove();
