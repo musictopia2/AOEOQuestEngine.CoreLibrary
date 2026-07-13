@@ -22,11 +22,8 @@ public static class ChampionModeExtensions
         {
             //source.Element("displayname")!.Value = title;
             //has to figure out how to add another tag.
-            string content = source.ToString();
-            if (content.Contains("<failonexpire>true</failonexpire>"))
-            {
-                source.Element("timer")!.Element("hideonui")!.Value = "true";
-            }
+            source.RemoveTimers();
+           
             XElement extras = new("championmode");
             extras.Value = "true";
             source.AddFirst(extras);

@@ -21,5 +21,14 @@ public static class MiscQuestHelpers
             var list = source.Elements("secondaryobjectives");
             list.Remove();
         }
+        //needs public so i can have a transformer that removes timers and do other things for experiments.
+        public void RemoveTimers()
+        {
+            string content = source.ToString();
+            if (content.Contains("<failonexpire>true</failonexpire>"))
+            {
+                source.Element("timer")!.Element("hideonui")!.Value = "true";
+            }
+        }
     }
 }
