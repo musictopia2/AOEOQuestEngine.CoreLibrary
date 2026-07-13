@@ -3,6 +3,7 @@ public class RemoveOptionalChallengesTransformer : ISecondaryObjectiveTransforme
 {
     public void Transform(XElement questXml)
     {
+        questXml.RemoveTimers(); //chose to remove timers.
         questXml.RemoveOptionalChallenges();
     }
 }

@@ -1,9 +1,28 @@
 ﻿namespace AOEOQuestEngine.CoreLibrary.StandardMode.Services;
 public class PromoteOptionalToRequiredTransformer : ISecondaryObjectiveTransformer
 {
-    public void Transform(XElement questXml)
+    void ISecondaryObjectiveTransformer.Transform(XElement questXml)
     {
-        //try with quest BFK_M201_VaitaraniRiver_Legendary
+
+        // remove timers
+        questXml.RemoveTimers();
+
+
+        // A timed optional must be dropped as a complete optional objective.
+        // Do this before RemoveTimers(), otherwise only the <timer> node is gone and
+        // the rest of that optional could accidentally be promoted to required.
+        var timedSecondaryBlocks = questXml
+            .Elements("secondaryobjectives")
+            .Where(x => x.Descendants("timer").Any())
+            .ToList();
+
+        foreach (var timedSecondary in timedSecondaryBlocks)
+        {
+            timedSecondary.Remove();
+        }
+
+
+
         var required = questXml.Element("objectives") ?? throw new InvalidOperationException("Missing required <objectives> section.");
 
         // Collect existing groups (direct children of <values> in the required objectives)
@@ -16,8 +35,7 @@ public class PromoteOptionalToRequiredTransformer : ISecondaryObjectiveTransform
         // Get max id to assign new unique IDs
         int maxId = required.DescendantsAndSelf()
             .Where(e => e.Attribute("id") != null)
-            .Select(e => (int?)int.Parse(e.Attribute("id")!.Value))
-            .Max() ?? 0;
+            .Max(e => (int?)int.Parse(e.Attribute("id")!.Value)) ?? 0;
 
         var secondaryBlocks = questXml.Elements("secondaryobjectives").ToList();
         foreach (var secondary in secondaryBlocks)
@@ -35,7 +53,7 @@ public class PromoteOptionalToRequiredTransformer : ISecondaryObjectiveTransform
 
                 if (!existingGroups.Contains(serializedGroup))
                 {
-                    XElement clonedGroup = new (challengeGroup);
+                    XElement clonedGroup = new(challengeGroup);
                     UpdateIdsRecursively(clonedGroup, ref maxId);
                     AddChallengeGroupToRequired(required, clonedGroup, ref maxId);
                     existingGroups.Add(clonedGroup.ToString(SaveOptions.DisableFormatting));
@@ -44,7 +62,19 @@ public class PromoteOptionalToRequiredTransformer : ISecondaryObjectiveTransform
 
             secondary.Remove();
         }
+
     }
+
+
+    private static void UpdateIdsRecursively(XElement element, ref int maxId)
+    {
+        element.SetAttributeValue("id", ++maxId);
+        foreach (var child in element.Elements())
+        {
+            UpdateIdsRecursively(child, ref maxId);
+        }
+    }
+
 
     private static void AddChallengeGroupToRequired(XElement requiredObjectives, XElement challengeGroup, ref int maxId)
     {
@@ -82,15 +112,6 @@ public class PromoteOptionalToRequiredTransformer : ISecondaryObjectiveTransform
         else
         {
             orValuesNode.Add(challengeGroup);
-        }
-    }
-
-    private static void UpdateIdsRecursively(XElement element, ref int maxId)
-    {
-        element.SetAttributeValue("id", ++maxId);
-        foreach (var child in element.Elements())
-        {
-            UpdateIdsRecursively(child, ref maxId);
         }
     }
 }
