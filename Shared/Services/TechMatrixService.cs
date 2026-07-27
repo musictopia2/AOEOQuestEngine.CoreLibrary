@@ -237,7 +237,7 @@ public class TechMatrixService
     public void StartGlobalSharedTimeSpanActivation(int start, int end) => StartActivationForRecipient(EnumRecipentType.GlobalSharedRMS, EnumActivationType.Timespan, 0, start, end);
     // Prerequisite-based Activations (Including GlobalSharedRMS)
     // Activation Methods (Including GlobalSharedRMS)
-    public void StartHumanTechRequirement(string techName)
+    public void StartHumanTechRequirementForever(string techName)
     {
         _current = new CustomTechModel()
         {
@@ -245,6 +245,18 @@ public class TechMatrixService
             ActivationType = EnumActivationType.Forever
         };
 
+        AddPrerequisite(new TechStatusActiveModel(techName));
+
+        AllTechs.Add(_current);
+    }
+    public void StartHumanTechRequirementDelayed(string techName, int whenToStart)
+    {
+        _current = new CustomTechModel()
+        {
+            RecipientType = EnumRecipentType.Human,
+            ActivationType = EnumActivationType.Delayed,
+            StartTime = whenToStart
+        };
         AddPrerequisite(new TechStatusActiveModel(techName));
 
         AllTechs.Add(_current);
