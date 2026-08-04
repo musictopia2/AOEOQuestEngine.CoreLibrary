@@ -249,7 +249,7 @@ public class TechMatrixService
 
         AllTechs.Add(_current);
     }
-    public void StartHumanTechRequirementTimSpan(string techName, int start, int end)
+    public void StartHumanTechRequirementTimeSpan(string techName, int start, int end)
     {
         _current = new CustomTechModel()
         {
