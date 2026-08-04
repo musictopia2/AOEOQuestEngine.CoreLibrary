@@ -249,13 +249,25 @@ public class TechMatrixService
 
         AllTechs.Add(_current);
     }
+    public void StartHumanTechRequirementTimSpan(string techName, int start, int end)
+    {
+        _current = new CustomTechModel()
+        {
+            RecipientType = EnumRecipentType.Human,
+            ActivationType = EnumActivationType.Timespan,
+            StartTime = start,
+            EndTime = end
+        };
+        AddPrerequisite(new TechStatusActiveModel(techName));
+        AllTechs.Add(_current);
+    }
     public void StartHumanTechRequirementDelayed(string techName, int whenToStart)
     {
         _current = new CustomTechModel()
         {
             RecipientType = EnumRecipentType.Human,
             ActivationType = EnumActivationType.Delayed,
-            StartTime = whenToStart
+            Time = whenToStart //try this.
         };
         AddPrerequisite(new TechStatusActiveModel(techName));
 
