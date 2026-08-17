@@ -13,8 +13,17 @@ public static class UnitHandlerExtensions
                 // Optional: log warning
                 return;
             }
-            var trainPoints = unitElement.Element("TrainPoints");
-            trainPoints?.Value = "0.0000";
+            XElement? trainPoints = unitElement.Element("TrainPoints");
+
+            if (trainPoints is null)
+            {
+                trainPoints = new XElement("TrainPoints", "0.0000");
+                unitElement.Add(trainPoints);
+            }
+            else
+            {
+                trainPoints.Value = "0.0000";
+            }
         }
     }
 }
