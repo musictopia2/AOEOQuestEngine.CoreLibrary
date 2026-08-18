@@ -26,6 +26,7 @@ public static class ServiceExtensions
 
 
             services.AddSingleton<QuestDataContainer>()
+                .AddSingleton<IComputerDatasetGenerator, DefaultComputerDatasetGenerator>()
                 .AddSingleton<IProcessQuestService, StandardProcessQuestService>()
                 .AddSingleton<IQuestOutcomeRecoveryService, DefaultQuestOutcomeRecoveryService>()
                 .AddSingleton<StandardSharedQuestProcessor>()
