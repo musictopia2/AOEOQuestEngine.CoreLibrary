@@ -10,7 +10,6 @@ public class StandardSharedQuestProcessor
     IPostLaunchAction post,
     IQuestPreparationHandler questPreparation,
     IQuestExtensionApplier questExtensions,
-    IComputerDatasetGenerator computerDatasetGenerator,
     ISpartanLaunchHandler launch,
     ISpartanUtilities spartanUtilities,
     QuestRunContainer questrunContainer,
@@ -28,7 +27,6 @@ public class StandardSharedQuestProcessor
         }
         await questPreparation.PrepareAsync();
         await characterService.CopyCharacterFilesAsync();
-        await computerDatasetGenerator.GenerateAsync();
         //comes from the quest service.
         XElement source = XElement.Load(oldQuestPath);
         secondaryTransformer.Transform(source);
